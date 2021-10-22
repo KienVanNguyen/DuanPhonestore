@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "860167902384",
+    "project_id": "duanphonestore",
+    "storage_bucket": "duanphonestore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860167902384:android:f62d7b7590f60bd8f1d775",
+        "android_client_info": {
+          "package_name": "com.kiennv.duanphonestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860167902384-3ei8p08v437075g0p59lal700np6k978.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdg16X9-ti_l-rfkVd_j89Ol5raqXezo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860167902384-3ei8p08v437075g0p59lal700np6k978.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

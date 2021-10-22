@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".User.Fragment.OrderFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarCTSP"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00a5ff"
+        >
+        <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/shimmer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            android:text="Đơn hàng"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+    <TextView
+        android:text="Danh sách các đơn hàng của bạn"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_donhang_trong"-->
+    <!--        android:text="Bạn chưa có đơn hàng nào"-->
+    <!--        android:textSize="18sp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lv_donhangcuatoi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

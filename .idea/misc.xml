@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/buttonchinhsua.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/buttonstyle.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/gradientbackground.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/ic_search.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/search_bar_background.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/search_btn.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/useritem.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_vanchuyen.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/button_product.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/chitietspsize.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/head_bg.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_login_bk.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_user.xml" value="0.26197916666666665" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/layout_bg.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/login_button_bk.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/login_shape_bk.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/rouded.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/round_background.xml" value="0.2703125" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/shape_status_completed.xml" value="0.28177083333333336" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/shape_status_current.xml" value="0.28177083333333336" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/submit_bg.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/useritem.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_admin.xml" value="0.12360688956433637" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_change_passs_user.xml" value="0.24010416666666667" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chitiet_ttdonhang.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chitietsp.xml" value="0.25" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_edit_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_login.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_oder_succes.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_rating_dialog.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_trangthaidonhang.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_xem_all_spbanchay.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_xem_all_spmoinhat.xml" value="0.23097826086956522" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/dialog_change_pass.xml" value="0.22554347826086957" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_card.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_order.xml" value="0.23641304347826086" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_user.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_card.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_sanpham.xml" value="0.6" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_trangthaidonhang.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/manhinhchao.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/menu/menu_bottom.xml" value="0.25416666666666665" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26614583333333336" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.176" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

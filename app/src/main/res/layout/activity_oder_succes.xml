@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#00a5ff"
+    tools:context=".User.Activity.OderSuccesActivity">
+    <ImageView
+        android:id="@+id/l1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/hieuung"/>
+    <ImageView
+        android:layout_below="@+id/l1"
+        android:layout_marginTop="140dp"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:src="@drawable/hieuung"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardviewHTMH"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:cardElevation="50dp"
+        app:cardCornerRadius="20dp">
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/successgif"/>
+<!--        <ImageView-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:src="@drawable/checked"/>-->
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BẠN ĐÃ THANH TOÁN GIỎ HÀNG THÀNH CÔNG BẠN CÓ MUỐN MUA THÊM "/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="10dp"
+            android:text="Tiếp tục mua hàng"
+            android:textAllCaps="false"
+
+            />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
