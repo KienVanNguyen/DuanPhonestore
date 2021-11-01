@@ -16,12 +16,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,18 +46,27 @@ import com.hsalf.smilerating.SmileRating;
 import com.kiennv.duanphonestore.LoginActivity;
 import com.kiennv.duanphonestore.R;
 import com.kiennv.duanphonestore.User.Activity.ChangePasssUserActivity;
+import com.kiennv.duanphonestore.User.Activity.ChatadminActivity;
 import com.kiennv.duanphonestore.User.Activity.EditUserActivity;
+import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserFragment extends Fragment {
-    private ImageView image_donhangvanchuyen,img_carduser;
+    private ImageView image_donhangvanchuyen,img_carduser,img_chatadminuser;
     private Button logout;
-    private TextView txtNameuser,txtEmailuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
+    private TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
     private CircleImageView crice_imageuser;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
@@ -55,6 +74,9 @@ public class UserFragment extends Fragment {
     private StorageReference storageReference;
     private String profileid;
     private GoogleSignInClient googleSignInClient;
+    private String name, phone,address, images;
+    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
+    private String URL_getPass = " http://192.168.1.7/Duan/user/getpassword.php";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +84,6 @@ public class UserFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_user, container, false);
 
         txtNameuser = v.findViewById(R.id.txtNameuser);
-        txtEmailuser = v.findViewById(R.id.txtEmailuser);
         txtPhoneuser = v.findViewById(R.id.txtPhoneuser);
         txtAddressuser = v.findViewById(R.id.txtAddressuser);
         crice_imageuser = v.findViewById(R.id.crice_imageuser);
@@ -80,6 +101,15 @@ public class UserFragment extends Fragment {
                 ft.commit();
             }
         });
+        //chuyen sang chat admin
+        img_chatadminuser = v.findViewById(R.id.img_chatadminuser);
+        img_chatadminuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChatadminActivity.class);
+                startActivity(intent);
+            }
+        });
         //chuyen sang gio hang
         img_carduser = v.findViewById(R.id.img_carduser);
         img_carduser.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +123,7 @@ public class UserFragment extends Fragment {
         });
 
         fAuth = FirebaseAuth.getInstance();
+
 //        profileid = fAuth.getCurrentUser().getUid();
         fStore = FirebaseFirestore.getInstance();
 
@@ -100,7 +131,6 @@ public class UserFragment extends Fragment {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(getActivity());
         if(signInAccount != null){
             txtNameuser.setText(signInAccount.getDisplayName());
-            txtEmailuser.setText(signInAccount.getEmail());
         }
         FirebaseUser firebaseUser = fAuth.getCurrentUser();
         if (firebaseUser != null){
@@ -131,48 +161,48 @@ public class UserFragment extends Fragment {
                         .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
                             }
                         })
                         .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String password = edtPasswordchange.getText().toString();
+
                                 if(TextUtils.isEmpty(password)){
                                     edtPasswordchange.setError("Chưa nhập mật khẩu");
                                     return;
                                 }
-                                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("User");
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            // dataSnapshot is the "issue" node with all children with id 0
-
-                                            for (DataSnapshot user : dataSnapshot.getChildren()) {
-                                                // do something with the individual "issues"
-                                                User usersBean = user.getValue(User.class);
-
-                                                if ( usersBean.getPassword().equals(edtPasswordchange.getText().toString().trim())) {
-                                                    Intent intent = new Intent(getContext(), ChangePasssUserActivity.class);
-                                                    startActivity(intent);
-                                                } else {
-                                                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                                                            .setTitleText("Kiểm tra lại mật khẩu")
-                                                            .show();
-                                                }
+                                if (!password.equals("")) {
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_getPass, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if (response.equals("success")) {
+                                                Intent intent = new Intent(getContext(), ChangePasssUserActivity.class);
+                                                startActivity(intent);
+                                            } else if (response.equals("false")) {
+                                                new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                                                        .setTitleText("Kiểm tra lại mật khẩu")
+                                                        .show();
                                             }
                                         }
-
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(DatabaseError error) {
-
-                                    }
-                                });
-
-                            }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }) {
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String, String> data = new HashMap<>();
+                                            data.put("password", password);
+                                            return data;
+                                        }
+                                    };
+                                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                                    requestQueue.add(stringRequest);
+                                }
+                                }
                         });
                 edtPasswordchange = view.findViewById(R.id.edtPasswordchange);
 
@@ -228,46 +258,45 @@ public class UserFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_rating_dialog, null);
         builder.setView(view);
-
-//                .setNegativeButton("", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    }
-//                })
-//                .setPositiveButton("", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//
-//                    }
-//                });
         builder.create().show();
     }
     //lay du lieu user
     private void userInfo(){
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("User");
-        reference.addValueEventListener(new ValueEventListener() {
+        name = txtNameuser.getText().toString();
+        phone = txtPhoneuser.getText().toString();
+        address = txtAddressuser.getText().toString();
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // dataSnapshot is the "issue" node with all children with id 0
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-                    for (DataSnapshot user : dataSnapshot.getChildren()) {
-                        User userBan = user.getValue(User.class);
-                        Picasso.get().load(userBan.getImages()).into(crice_imageuser);
-                        txtNameuser.setText(userBan.getFullName());
-                        txtEmailuser.setText(userBan.getEmail());
-                        txtPhoneuser.setText(userBan.getPhone());
-                        txtAddressuser.setText(userBan.getAddress());
+                    name  = jsonObject.getString("name");
+                    phone = jsonObject.getString("phone");
+                    address = jsonObject.getString("address");
+                    images = jsonObject.getString("images");
+                    Picasso.get().load(images).into(crice_imageuser);
 
-                    }
+                    txtNameuser.setText(name);
+                    txtPhoneuser.setText(phone);
+                    txtAddressuser.setText(address);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+        }, new Response.ErrorListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onErrorResponse(VolleyError error) {
 
+                error.printStackTrace();
             }
         });
+        queue.add(stringRequest);
+
+    }
     }
 
-}

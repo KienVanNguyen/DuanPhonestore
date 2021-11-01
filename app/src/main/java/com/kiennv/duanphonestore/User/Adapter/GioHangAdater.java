@@ -64,7 +64,7 @@ public class GioHangAdater extends RecyclerView.Adapter<GioHangAdater.ViewHolder
 
         int sl= Integer.parseInt(holder.txtqualttySPGH.getText().toString());
         //an hien so luon max min
-        if(sl>999){
+        if(sl>99){
             holder.imageTang.setVisibility(View.INVISIBLE);
             holder.imgGiam.setVisibility(View.VISIBLE);
         }else if(sl==1){
@@ -92,7 +92,7 @@ public class GioHangAdater extends RecyclerView.Adapter<GioHangAdater.ViewHolder
                 finalViewHolder.txtPriceSPGH.setText(decimalFormat.format(gtmt)+" VNĐ");
                 finalViewHolder.txtqualttySPGH.setText(String.valueOf(slmn));
                 CardFragment.Evenutil();
-                if(slmn==999){
+                if(slmn==99){
                     finalViewHolder.imageTang.setVisibility(View.INVISIBLE);
                     finalViewHolder.imgGiam.setVisibility(View.VISIBLE);
                     finalViewHolder.txtqualttySPGH.setText(String.valueOf(slmn));
@@ -152,7 +152,7 @@ public class GioHangAdater extends RecyclerView.Adapter<GioHangAdater.ViewHolder
                 DecimalFormat decimalFormat=new DecimalFormat("###,###,###");
                 finalViewHolder.txtPriceSPGH.setText(decimalFormat.format(gtmt)+" VND");
                 CardFragment.Evenutil();
-                if(slmn==999){
+                if(slmn==99){
                     finalViewHolder.imageTang.setVisibility(View.INVISIBLE);
                     finalViewHolder.imgGiam.setVisibility(View.VISIBLE);
                     finalViewHolder.txtqualttySPGH.setText(String.valueOf(slmn));

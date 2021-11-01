@@ -14,6 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,12 +31,18 @@ import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 
 public class CardFragment extends Fragment {
     private static TextView tv_diachicard, txtPriceTongtienCard, tvThongBaoGH;
     private static RecyclerView rcv_giohang;
     private static GioHangAdater giohangAdapter;
+    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
+    private String address;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,23 +91,31 @@ public class CardFragment extends Fragment {
     }
     //lay thong tin dia chi khach hang
     private void diachiKH(){
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("User");
-        reference.addValueEventListener(new ValueEventListener() {
+        address = tv_diachicard.getText().toString();
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // dataSnapshot is the "issue" node with all children with id 0
-                    for (DataSnapshot user : dataSnapshot.getChildren()) {
-                        User userBan = user.getValue(User.class);
-                        tv_diachicard.setText(userBan.getAddress());
-                    }
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    address = jsonObject.getString("address");
+
+                    tv_diachicard.setText(address);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-
+        }, new Response.ErrorListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onErrorResponse(VolleyError error) {
 
+                error.printStackTrace();
             }
         });
+        queue.add(stringRequest);
+
     }
 }

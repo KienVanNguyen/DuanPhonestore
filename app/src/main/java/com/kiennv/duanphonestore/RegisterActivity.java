@@ -1,5 +1,6 @@
 package com.kiennv.duanphonestore;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +21,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +50,10 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,15 +63,11 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvLogin;
     private CircleImageView crice_register;
-    private ImageView imgeyere,imgeyecofirmre;
-    private DatabaseReference mdata;
     private Bitmap bitmap;
     private Uri filepath;
-
-
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseFirestore fStore;
     float v=0;
+    private String encodeImageString;
+    private String URL = "http://192.168.1.7/Duan/user/register.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtPhoneRe = findViewById(R.id.edtPhoneRe);
         edtAddressRe = findViewById(R.id.edtAddressRe);
         edtConfirmPassRe = findViewById(R.id.edtConfirmPassRe);
-        imgeyecofirmre = findViewById(R.id.imgeyecofirmre);
-        imgeyere = findViewById(R.id.imgeyere);
+
         btnRegister = findViewById(R.id.btnRegister);
         tvLogin = findViewById(R.id.tvLogin);
         crice_register = findViewById(R.id.crice_register);
@@ -79,8 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtPassRe.setTranslationY(300);
         edtAddressRe.setTranslationY(300);
         edtConfirmPassRe.setTranslationY(300);
-        imgeyere.setTranslationY(300);
-        imgeyecofirmre.setTranslationY(300);
+
 
         edtNameRe.setAlpha(v);
         edtEmailRe.setAlpha(v);
@@ -88,24 +98,18 @@ public class RegisterActivity extends AppCompatActivity {
         edtAddressRe.setAlpha(v);
         edtPassRe.setAlpha(v);
         edtConfirmPassRe.setAlpha(v);
-        imgeyere.setAlpha(v);
-        imgeyecofirmre.setAlpha(v);
+
 
         edtNameRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         edtEmailRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(600).start();
         edtPhoneRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(800).start();
         edtAddressRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1000).start();
         edtPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
-        imgeyere.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
+
         edtConfirmPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1600).start();
-        imgeyecofirmre.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1800).start();
 
 
-        fStore = FirebaseFirestore.getInstance();
-        if(auth.getCurrentUser() != null){
-            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            finish();
-        }
+
         crice_register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,8 +151,8 @@ public class RegisterActivity extends AppCompatActivity {
                 final String address = edtAddressRe.getText().toString();
 
                 //kiem tra loi form
-                if(crice_register.getDrawable()==null){
-                    Toast.makeText(RegisterActivity.this,"Bạn chưa chọn ảnh",Toast.LENGTH_SHORT).show();
+                if (crice_register.getDrawable() == null) {
+                    Toast.makeText(RegisterActivity.this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT).show();
 
                 }
                 if (TextUtils.isEmpty(email)) {
@@ -176,52 +180,43 @@ public class RegisterActivity extends AppCompatActivity {
                     edtAddressRe.setError("Chưa nhập địa chỉ");
                     return;
                 }
-                if(phone.length()!=10){
-                    edtPhoneRe.setError( "Số điện thoại chỉ có 10 số" );
+                if (phone.length() != 10) {
+                    edtPhoneRe.setError("Số điện thoại chỉ có 10 số");
                 }
                 if (!password.equals(cofirmpassword)) {
                     Toast.makeText(RegisterActivity.this, "Mật khẩu không giống nhau", Toast.LENGTH_SHORT).show();
                 }
+                else if (!fullName.equals("") && !email.equals("") && !phone.equals("") && !address.equals("") && !password.equals("")){
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                                Toast.makeText(getApplicationContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
 
-                FirebaseStorage storage=FirebaseStorage.getInstance();
-                final StorageReference uploader=storage.getReference("Images"+new Random().nextInt(50));
-
-                uploader.putFile(filepath)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                            {
-                                uploader.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri){
-
-
-                                        FirebaseDatabase db=FirebaseDatabase.getInstance();
-                                        DatabaseReference root=db.getReference("User");
-
-                                        User obj=new User(edtNameRe.getText().toString(),edtEmailRe.getText().toString(),edtAddressRe.getText().toString(),edtPhoneRe.getText().toString(),edtPassRe.getText().toString(),uri.toString());
-                                        root.child(edtNameRe.getText().toString()).setValue(obj);
-
-                                        edtEmailRe.setText("");
-                                        edtPassRe.setText("");
-                                        edtNameRe.setText("");
-                                        edtPhoneRe.setText("");
-                                        edtAddressRe.setText("");
-
-                                        Toast.makeText(getApplicationContext(),"Đăng ký thành công",Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                                        finish();
-                                    }
-                                });
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot)
-                            {
-
-                            }
-                        });
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(RegisterActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> data = new HashMap<>();
+                            data.put("name", fullName);
+                            data.put("email", email);
+                            data.put("phone", phone);
+                            data.put("address", address);
+                            data.put("password", password);
+                            data.put("upload", encodeImageString);
+                            return data;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
+                }
             }
         });
         //chuyen sang login
@@ -235,9 +230,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
-
-
+    private void encodeBitmapImage(Bitmap bitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        byte[] bytesofimage=byteArrayOutputStream.toByteArray();
+        encodeImageString=android.util.Base64.encodeToString(bytesofimage, Base64.DEFAULT);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
@@ -248,51 +247,12 @@ public class RegisterActivity extends AppCompatActivity {
                 InputStream inputStream=getContentResolver().openInputStream(filepath);
                 bitmap= BitmapFactory.decodeStream(inputStream);
                 crice_register.setImageBitmap(bitmap);
+                encodeBitmapImage(bitmap);
             }catch (Exception ex)
             {
 
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-    //hien thi mat khau
-    public void ShowHidePassRe(View view){
-
-        if(view.getId()==R.id.imgeyere){
-
-            if(edtPassRe.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-                imgeyere.setImageResource(R.drawable.hideeye);
-
-                //Show Password
-                edtPassRe.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            }
-            else{
-                imgeyere.setImageResource(R.drawable.showeye);
-
-                //Hide Password
-                edtPassRe.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-            }
-        }
-    }
-    //hien thi mat khau
-    public void ShowHidePassReConfirm(View view){
-
-        if(view.getId()==R.id.imgeyecofirmre){
-
-            if(edtConfirmPassRe.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-                imgeyecofirmre.setImageResource(R.drawable.hideeye);
-
-                //Show Password
-                edtConfirmPassRe.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            }
-            else{
-                imgeyecofirmre.setImageResource(R.drawable.showeye);
-
-                //Hide Password
-                edtConfirmPassRe.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-            }
-        }
     }
 }

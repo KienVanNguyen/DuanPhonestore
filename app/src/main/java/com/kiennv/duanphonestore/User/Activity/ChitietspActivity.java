@@ -110,7 +110,7 @@ public class ChitietspActivity extends AppCompatActivity {
         }else if (soluong==1){
             imgTruChitietsp.setVisibility(View.INVISIBLE);
             imgCongChitietsp.setVisibility(View.VISIBLE);
-        }else if (soluong>999){
+        }else if (soluong>99){
             imgTruChitietsp.setVisibility(View.VISIBLE);
             imgCongChitietsp.setVisibility(View.INVISIBLE);
         }

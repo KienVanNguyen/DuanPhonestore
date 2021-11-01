@@ -67,4 +67,5 @@ dependencies {
     implementation 'com.github.sujithkanna:smileyrating:2.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 
+
 }

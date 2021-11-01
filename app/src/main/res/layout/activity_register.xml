@@ -59,77 +59,250 @@
                             android:text="Đăng ký"
                             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
-
-                        <EditText
-                            android:id="@+id/edtNameRe"
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="20dp"
-                            style="@style/modifiedEditText"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:hint="Tên"/>
-                        <EditText
-                            android:id="@+id/edtEmailRe"
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtNameRe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_person"
+                                android:drawableLeft="@drawable/ic_person"
+                                android:drawablePadding="12dp"
+                                android:hint="Tên"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+
+                        </androidx.cardview.widget.CardView>
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtNameRe"-->
+<!--                            android:layout_marginTop="20dp"-->
+<!--                            style="@style/modifiedEditText"-->
+<!--                            android:inputType="text"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:hint="Tên"/>-->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
-                            style="@style/modifiedEditText"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:hint="Email"/>
-                        <EditText
-                            android:id="@+id/edtPhoneRe"
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtEmailRe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_mail"
+                                android:drawableLeft="@drawable/ic_mail"
+                                android:drawablePadding="12dp"
+                                android:hint="Email"
+                                android:inputType="textEmailAddress"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+
+                        </androidx.cardview.widget.CardView>
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtEmailRe"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            style="@style/modifiedEditText"-->
+<!--                            android:inputType="textEmailAddress"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:hint="Email"/>-->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
-                            style="@style/modifiedEditText"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:hint="Số điện thoại"/>
-                        <EditText
-                            android:id="@+id/edtAddressRe"
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtPhoneRe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_phone"
+                                android:drawableLeft="@drawable/ic_phone"
+                                android:drawablePadding="12dp"
+                                android:hint="Số điện thoại"
+                                android:inputType="phone"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+
+                        </androidx.cardview.widget.CardView>
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtPhoneRe"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            style="@style/modifiedEditText"-->
+<!--                            android:inputType="textEmailAddress"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:hint="Số điện thoại"/>-->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
-                            style="@style/modifiedEditText"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:hint="Địa chỉ"/>
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:weightSum="10"
-                            android:layout_height="wrap_content">
-                            <EditText
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtAddressRe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_address"
+                                android:drawableLeft="@drawable/ic_address"
+                                android:drawablePadding="12dp"
+                                android:hint="Địa chỉ"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+
+                        </androidx.cardview.widget.CardView>
+<!--                        <EditText-->
+<!--                            android:id="@+id/edtAddressRe"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            style="@style/modifiedEditText"-->
+<!--                            android:inputType="textEmailAddress"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:hint="Địa chỉ"/>-->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edtPassRe"
-                                style="@style/modifiedEditText"
+                                android:inputType="textPassword"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_lock"
+                                android:drawableLeft="@drawable/ic_lock"
+                                android:drawablePadding="12dp"
                                 android:hint="Mật khẩu"
-                                android:layout_weight="7"
-                                android:inputType="textPassword"
-                                />
-                            <ImageView
-                                android:layout_gravity="bottom"
-                                android:id="@+id/imgeyere"
-                                android:layout_weight="3"
-                                android:layout_width="40dp"
-                                android:layout_height="30dp"
-                                android:onClick="ShowHidePassRe"
-                                android:src="@drawable/showeye"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:weightSum="10"
-                            android:layout_height="wrap_content">
-                            <EditText
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            app:cardBackgroundColor="#F7F7F7"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="0dp">
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edtConfirmPassRe"
-                                style="@style/modifiedEditText"
-                                android:hint="Nhập lại mật khẩu"
-                                android:layout_weight="7"
                                 android:inputType="textPassword"
-                                />
-                            <ImageView
-                                android:layout_gravity="bottom"
-                                android:id="@+id/imgeyecofirmre"
-                                android:layout_weight="3"
-                                android:layout_width="40dp"
-                                android:layout_height="30dp"
-                                android:onClick="ShowHidePassReConfirm"
-                                android:src="@drawable/showeye"/>
-                        </LinearLayout>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_lock"
+                                android:drawableLeft="@drawable/ic_lock"
+                                android:drawablePadding="12dp"
+                                android:hint="Nhập lại mật khẩu"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="50dp"
+                                android:singleLine="true" />
+                        </androidx.cardview.widget.CardView>
+<!--                        <LinearLayout-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:weightSum="10"-->
+<!--                            android:layout_height="wrap_content">-->
+<!--                            <EditText-->
+<!--                                android:id="@+id/edtPassRe"-->
+<!--                                style="@style/modifiedEditText"-->
+<!--                                android:hint="Mật khẩu"-->
+<!--                                android:layout_weight="7"-->
+<!--                                android:inputType="textPassword"-->
+<!--                                />-->
+<!--                            <ImageView-->
+<!--                                android:layout_gravity="bottom"-->
+<!--                                android:id="@+id/imgeyere"-->
+<!--                                android:layout_weight="3"-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="30dp"-->
+<!--                                android:onClick="ShowHidePassRe"-->
+<!--                                android:src="@drawable/showeye"/>-->
+<!--                        </LinearLayout>-->
+<!--                        <LinearLayout-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:weightSum="10"-->
+<!--                            android:layout_height="wrap_content">-->
+<!--                            <EditText-->
+<!--                                android:id="@+id/edtConfirmPassRe"-->
+<!--                                style="@style/modifiedEditText"-->
+<!--                                android:hint="Nhập lại mật khẩu"-->
+<!--                                android:layout_weight="7"-->
+<!--                                android:inputType="textPassword"-->
+<!--                                />-->
+<!--                            <ImageView-->
+<!--                                android:layout_gravity="bottom"-->
+<!--                                android:id="@+id/imgeyecofirmre"-->
+<!--                                android:layout_weight="3"-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="30dp"-->
+<!--                                android:onClick="ShowHidePassReConfirm"-->
+<!--                                android:src="@drawable/showeye"/>-->
+<!--                        </LinearLayout>-->
 
                         <Button
                             android:id="@+id/btnRegister"

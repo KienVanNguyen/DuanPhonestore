@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,15 +50,24 @@ import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.kiennv.duanphonestore.LoginActivity;
 import com.kiennv.duanphonestore.R;
+import com.kiennv.duanphonestore.RegisterActivity;
 import com.kiennv.duanphonestore.User.Fragment.CardFragment;
 import com.kiennv.duanphonestore.User.Fragment.HomeFragment;
 import com.kiennv.duanphonestore.User.Fragment.UserFragment;
+import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,10 +78,13 @@ public class EditUserActivity extends AppCompatActivity {
     private Button btnConfirmedit;
     private TextInputEditText edtAddressedit,edtPhoneedit;
     private TextView edtEmailedit;
-    private DatabaseReference reference;
     private static final int GALLER_ACTION_PICK_CODE = 100;
-
-
+    private String phone,address,email, images;
+    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
+    private String URL_updateUser = " http://192.168.1.7/Duan/user/updateUser.php";
+    private String encodeImageString;
+    private Bitmap bitmap;
+    private Uri filepath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,64 +102,79 @@ public class EditUserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        reference = FirebaseDatabase.getInstance().getReference("User");
-        //chinh sua hinh anh
-        floatingImageedit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runTimePermission();
-            }
-        });
+
+
+
         //hien thi nguoi dung
         showAlluserdata();
+
+        //chinh sua hinh anh
+        floatingImageedit.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dexter.withActivity(EditUserActivity.this)
+                        .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response)
+                            {
+                                Intent intent=new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                startActivityForResult(Intent.createChooser(intent,"Select Image File"),1);
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+            }
+        });
 
         //chinh sua tai khoan
         btnConfirmedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String mail = edtEmailedit.getText().toString();
                     String phone = edtPhoneedit.getText().toString();
                     String address = edtAddressedit.getText().toString();
 
                 if(phone.length()==10 && imageedit.getDrawable()!=null) {
-
-                    FirebaseStorage storage= FirebaseStorage.getInstance();
-                    final StorageReference storageReference = storage.getReferenceFromUrl("gs://duanphonestore.appspot.com");
-                    Calendar calendar = Calendar.getInstance();
-                    StorageReference mountainsRef=storageReference.child("Images"+calendar.getTimeInMillis()+".png");
-                    imageedit.setDrawingCacheEnabled(true);
-                    imageedit.buildDrawingCache();
-                    final byte[] data =imageViewToByte(imageedit);
-
-                    UploadTask uploadTask = mountainsRef.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText( EditUserActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                            // ...
-                            Task<Uri> dowloadURl=taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                            dowloadURl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_updateUser,
+                            new Response.Listener<String>() {
                                 @Override
-                                public void onSuccess(Uri uri) {
-                                    String imageUrl = uri.toString();
-                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User").child("nhom 1");
-                                    Map<String, Object> updates = new HashMap<String, Object>();
+                                public void onResponse(String response) {
+                                    Intent intent = new Intent(EditUserActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                    Toast.makeText(EditUserActivity.this, "Thiết lập tài khoản thành công", Toast.LENGTH_SHORT).show();
 
-                                    updates.put("email", mail);
-                                    updates.put("address", address);
-                                    updates.put("phone", phone);
-                                    updates.put("images", imageUrl);
-                                    ref.updateChildren(updates);
-                                    Toast.makeText( EditUserActivity.this, "Đổi thông tin thành công", Toast.LENGTH_SHORT ).show();
                                 }
-                            });
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
                         }
-                    });
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> params = new HashMap<>();
+                            params.put("phone", phone);
+                            params.put("address", address);
+                            params.put("upload", encodeImageString);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(request);
+
                 }else if(phone.length()!=10 || imageedit.getDrawable()==null){
                     if(phone.length()!=10){
                         edtPhoneedit.setError( "Số điện thoại chỉ có 10 số, hãy kiểm tra lại." );
@@ -153,89 +188,66 @@ public class EditUserActivity extends AppCompatActivity {
     }
     //lay du lieu nguoi dung ve
     private void showAlluserdata() {
-        reference.addValueEventListener(new ValueEventListener() {
+         email = edtEmailedit.getText().toString();
+         phone = edtPhoneedit.getText().toString();
+         address = edtAddressedit.getText().toString();
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // dataSnapshot is the "issue" node with all children with id 0
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-                    for (DataSnapshot user : dataSnapshot.getChildren()) {
-                        User userBan = user.getValue(User.class);
-                        Picasso.get().load(userBan.getImages()).into(imageedit);
-                        edtEmailedit.setText(userBan.getEmail());
-                        edtPhoneedit.setText(userBan.getPhone());
-                        edtAddressedit.setText(userBan.getAddress());
+                    email = jsonObject.getString("email");
+                    phone = jsonObject.getString("phone");
+                    address = jsonObject.getString("address");
+                    images = jsonObject.getString("images");
+                    Picasso.get().load(images).into(imageedit);
 
-                    }
+                    edtEmailedit.setText(email);
+                    edtPhoneedit.setText(phone);
+                    edtAddressedit.setText(address);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-
+        }, new Response.ErrorListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onErrorResponse(VolleyError error) {
 
+                error.printStackTrace();
             }
         });
-    }
-    public  void runTimePermission(){
-        Dexter.withContext( EditUserActivity.this).withPermission( Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
-            @Override
-            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                galleryIntent();
-            }
+        queue.add(stringRequest);
 
-            @Override
-            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-            }
-        }).check();
     }
-    //Pick Image From Gallery
-    private void galleryIntent() {
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i,GALLER_ACTION_PICK_CODE);
+    //hinh anh
+    private void encodeBitmapImage(Bitmap bitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        byte[] bytesofimage=byteArrayOutputStream.toByteArray();
+        encodeImageString=android.util.Base64.encodeToString(bytesofimage, Base64.DEFAULT);
     }
-    //Convert Bitmap To Byte
-    public static byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap= getResizedBitmap( bitmap,1024 );
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
-    }
-    public static Bitmap getResizedBitmap(Bitmap bitmap, int maxSize) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float bitmapRatio = (float) width / height;
-        if (bitmapRatio > 1) {
-            width = maxSize;
-            height = (int) (width / bitmapRatio);
-        } else {
-            height = maxSize;
-            width = (int) (height * bitmapRatio);
-        }
-        return Bitmap.createScaledBitmap(bitmap, width, height, true);
-    }
-
-    //Convert Byte To BitMap
-    public static Bitmap convertCompressedByteArrayToBitmap(byte[] src){
-        return BitmapFactory.decodeByteArray(src, 0, src.length);
-    }
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == GALLER_ACTION_PICK_CODE){
-                Uri imageUri = data.getData();
-                imageedit.setImageURI(imageUri);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        if(requestCode==1  && resultCode==RESULT_OK)
+        {
+            filepath=data.getData();
+            try{
+                InputStream inputStream=getContentResolver().openInputStream(filepath);
+                bitmap= BitmapFactory.decodeStream(inputStream);
+                imageedit.setImageBitmap(bitmap);
+                encodeBitmapImage(bitmap);
+            }catch (Exception ex)
+            {
+
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

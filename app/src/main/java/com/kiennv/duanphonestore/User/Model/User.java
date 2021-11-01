@@ -1,11 +1,13 @@
 package com.kiennv.duanphonestore.User.Model;
 
 public class User {
+    private int id;
     private String phone, password, fullName, email, address;
     private String images;
 
 
-    public User(String fullName, String email,String address, String phone, String password, String images) {
+    public User(int id,String fullName, String email,String address, String phone, String password, String images) {
+        this.id = id;
         this.phone = phone;
         this.address = address;
         this.fullName = fullName;
@@ -17,6 +19,14 @@ public class User {
 
     public User(){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAddress() {

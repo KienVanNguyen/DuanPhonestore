@@ -7,17 +7,13 @@
     android:orientation="vertical"
     android:background="#00a5ff"
     tools:context=".User.Activity.OderSuccesActivity">
+
     <ImageView
         android:id="@+id/l1"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:src="@drawable/hieuung"/>
-    <ImageView
-        android:layout_below="@+id/l1"
-        android:layout_marginTop="140dp"
         android:layout_width="wrap_content"
-        android:layout_height="500dp"
-        android:src="@drawable/hieuung"/>
+        android:layout_height="wrap_content"
+        android:src="@drawable/hieuung" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardviewHTMH"
         android:layout_width="350dp"
@@ -30,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/successgif"/>
+            android:src="@drawable/ordersuccess"/>
 <!--        <ImageView-->
 <!--            android:layout_gravity="center"-->
 <!--            android:layout_width="150dp"-->

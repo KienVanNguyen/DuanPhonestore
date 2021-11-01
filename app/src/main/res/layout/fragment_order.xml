@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fafafa"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".User.Fragment.OrderFragment">
 
@@ -24,27 +26,71 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
     <TextView
-        android:text="Danh sách các đơn hàng của bạn"
-        android:textSize="18sp"
+        android:text="Danh sách các đơn hàng đã đặt"
+        android:textSize="20dp"
         android:textStyle="bold"
-        android:gravity="center"
         android:layout_margin="10dp"
         android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <!--    <TextView-->
-    <!--        android:id="@+id/tv_donhang_trong"-->
-    <!--        android:text="Bạn chưa có đơn hàng nào"-->
-    <!--        android:textSize="18sp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:textColor="@color/black"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content" />-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lv_donhangcuatoi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
 
+    <RelativeLayout
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="60dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:textColor="#00a5ff"
+            android:text="Bạn chưa đăt mua sản phẩm nào."/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lv_donhangcuatoi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+   <LinearLayout
+       android:layout_alignParentBottom="true"
+       android:weightSum="10"
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <Button
+           android:layout_weight="5"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:background="@drawable/bg_vanchuyen"
+           android:gravity="center"
+           android:text="Hủy đơn hàng"
+           android:textAllCaps="false"
+           android:textColor="#00a5ff"
+           android:layout_marginRight="5dp"
+           android:textSize="16dp"
+           />
+       <Button
+           android:id="@+id/btnLienheOrder"
+           android:layout_weight="5"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:background="@drawable/bg_trangthaidonhang"
+           android:gravity="center"
+           android:text="Liên hệ"
+           android:layout_marginLeft="5dp"
+           android:textColor="#ffffff"
+           android:textAllCaps="false"
+           android:textSize="16dp"
+            />
+   </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

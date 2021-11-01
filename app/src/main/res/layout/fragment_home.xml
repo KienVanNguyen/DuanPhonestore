@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:text="Sản phẩm mới nhất"
+                            android:text="Sản phẩm mới"
                             android:textColor="#000000"
                             android:textSize="20dp"
                             android:textStyle="bold" />
@@ -131,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:text="Sản phẩm bán chạy"
+                            android:text="Điện thoại nổi bật"
                             android:textColor="#000000"
                             android:textSize="20dp"
                             android:textStyle="bold" />

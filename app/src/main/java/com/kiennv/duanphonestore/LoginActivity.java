@@ -20,6 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,17 +48,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtEmailLo, edtPassLo;
-    private ImageView imgeyelo;
     private Button btnLogin;
     private TextView tvRegister, forgotPass,tvchuacotk,phonestore;
     private CheckBox checkbox_login;
@@ -61,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
-
+    private String URL = "http://192.168.1.7/Duan/user/login.php";
     private ImageView face,gg,twiter;
     float v=0;
 
@@ -76,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tvRegister);
         forgotPass = findViewById(R.id.forgotPass);
         checkbox_login = findViewById(R.id.checkbox_login);
-        imgeyelo = findViewById(R.id.imgeyelo);
         tvchuacotk = findViewById(R.id.tvchuacotk);
         phonestore = findViewById(R.id.phonestore);
 
@@ -93,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
         twiter.setTranslationY(300);
         edtEmailLo.setTranslationY(300);
         edtPassLo.setTranslationY(300);
-        imgeyelo.setTranslationY(300);
         checkbox_login.setTranslationY(300);
         forgotPass.setTranslationY(300);
         btnLogin.setTranslationY(300);
@@ -105,7 +114,6 @@ public class LoginActivity extends AppCompatActivity {
         twiter.setAlpha(v);
         edtEmailLo.setAlpha(v);
         edtPassLo.setAlpha(v);
-        imgeyelo.setAlpha(v);
         checkbox_login.setAlpha(v);
         forgotPass.setAlpha(v);
         btnLogin.setAlpha(v);
@@ -118,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
 
         edtEmailLo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         edtPassLo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(600).start();
-        imgeyelo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(800).start();
         checkbox_login.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1000).start();
         forgotPass.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
         btnLogin.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
@@ -127,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         fAuth = FirebaseAuth.getInstance();
+
         loginPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
@@ -146,55 +154,57 @@ public class LoginActivity extends AppCompatActivity {
                     edtEmailLo.setError("Chưa nhập Email");
                     return;
                 }
-                if (password.length() > 6) {
-                    edtPassLo.setError("Mật khẩu phải > 6 ký tự");
+                if (password.length() < 6) {
+                    edtPassLo.setError("Mật khẩu phải < 6 ký tự");
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
                     edtPassLo.setError("Chưa nhập mật khẩu");
                     return;
-
                     // đăng nhập
 
-                } DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("User");
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            // dataSnapshot is the "issue" node with all children with id 0
-
-                            for (DataSnapshot user : dataSnapshot.getChildren()) {
-                                // do something with the individual "issues"
-                                User usersBean = user.getValue(User.class);
-
-                                if (usersBean.getEmail().equals(edtEmailLo.getText().toString().trim()) && usersBean.getPassword().equals(edtPassLo.getText().toString().trim())) {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    if (checkbox_login.isChecked()) {
-                                        loginPrefsEditor.putBoolean( "saveLogin", true );
-                                        loginPrefsEditor.putString( "email", email );
-                                        loginPrefsEditor.putString( "password", password );
-                                        loginPrefsEditor.commit();
-                                    } else {
-                                        loginPrefsEditor.clear();
-                                        loginPrefsEditor.commit();
-                                    }
-                                    startActivity(intent);
-                                    finish();
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Kiểm tra email và mật khẩu", Toast.LENGTH_SHORT).show();
-                                }
+                }
+                if (!email.equals("") && !password.equals("")){
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (checkbox_login.isChecked()) {
+                                loginPrefsEditor.putBoolean( "saveLogin", true );
+                                loginPrefsEditor.putString( "email", email );
+                                loginPrefsEditor.putString( "password", password );
+                                loginPrefsEditor.commit();
+                            } else {
+                                loginPrefsEditor.clear();
+                                loginPrefsEditor.commit();
+                            }
+                            if (response.equals("success")) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else if (response.equals("false")) {
+                                Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                             }
                         }
-
-                    }
-
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-
-                    }
-                });
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> data = new HashMap<>();
+                            data.put("email", email);
+                            data.put("password", password);
+                            return data;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
+                }else {
+                    Toast.makeText(LoginActivity.this, "Login false", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -329,23 +339,23 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
     //hien thi mat khau
-    public void ShowHidePass(View view){
-
-        if(view.getId()==R.id.imgeyelo){
-
-            if(edtPassLo.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-                imgeyelo.setImageResource(R.drawable.hideeye);
-
-                //Show Password
-                edtPassLo.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            }
-            else{
-                imgeyelo.setImageResource(R.drawable.showeye);
-
-                //Hide Password
-                edtPassLo.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-            }
-        }
-    }
+//    public void ShowHidePass(View view){
+//
+//        if(view.getId()==R.id.imgeyelo){
+//
+//            if(edtPassLo.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+//                imgeyelo.setImageResource(R.drawable.hideeye);
+//
+//                //Show Password
+//                edtPassLo.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//            }
+//            else{
+//                imgeyelo.setImageResource(R.drawable.showeye);
+//
+//                //Hide Password
+//                edtPassLo.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//
+//            }
+//        }
+//    }
 }

@@ -14,6 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +41,7 @@ public class ChangePasssUserActivity extends AppCompatActivity {
     private ImageView imgchanglepass;
     private TextInputEditText edtPasswordnewchange,edtPasswordnewnhaplai;
     private Button btnConfirmchangle;
+    private String URL_updatePass = " http://192.168.1.7/Duan/user/updatePassword.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +56,14 @@ public class ChangePasssUserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //thay doi mat khau
         btnConfirmchangle = findViewById(R.id.btnConfirmchangle);
         btnConfirmchangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String passMoi= edtPasswordnewchange.getText().toString();
-                    String passMoinhaplai= edtPasswordnewnhaplai.getText().toString();
+                String passMoi = edtPasswordnewchange.getText().toString();
+                String passMoinhaplai = edtPasswordnewnhaplai.getText().toString();
 
 //
                 if (TextUtils.isEmpty(passMoi) && TextUtils.isEmpty(passMoinhaplai)) {
@@ -62,20 +72,41 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                     return;
                 }
                 if (!passMoi.equals(passMoinhaplai)) {
-                   edtPasswordnewchange.setError("Mật khẩu không giống nhau");
-                }else {
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User").child("nhom 1");
-                    Map<String, Object> updates = new HashMap<String, Object>();
-
-                    updates.put("password", passMoi);
-                    updates.put("password", passMoinhaplai);
-                    ref.updateChildren(updates);
-                    Intent intent = new Intent(ChangePasssUserActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    Toast.makeText( ChangePasssUserActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT ).show();
+                    edtPasswordnewchange.setError("Mật khẩu không giống nhau");
                 }
+                if (passMoi.length() < 6 || passMoinhaplai.length() < 6) {
+                    edtPasswordnewchange.setError("Mật khẩu phải < 6 ký tự");
+                    edtPasswordnewnhaplai.setError("Mật khẩu phải < 6 ký tự");
+                    return;
+                } else {
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_updatePass,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Intent intent = new Intent(ChangePasssUserActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                    Toast.makeText(ChangePasssUserActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
 
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            Map<String, String> params = new HashMap<>();
+                             params.put("password", passMoi);
+                            return params;
+                        }
+                    };
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(request);
+                }
 
             }
         });

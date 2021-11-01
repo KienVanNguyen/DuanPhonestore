@@ -41,11 +41,11 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgXiaomi"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp">
-
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
@@ -54,6 +54,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgApple"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
@@ -67,6 +68,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgSamsung"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
@@ -80,6 +82,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgOppo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
@@ -93,6 +96,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgHuawei"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
@@ -105,6 +109,7 @@
                     android:src="@drawable/logohuawei" />
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardviewImgVivo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"

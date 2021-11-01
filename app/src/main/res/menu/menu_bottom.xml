@@ -4,7 +4,7 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/home"
-        android:title="Home"
+        android:title="Trang chủ"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         app:cnb_backgroundColor="#00a5ff"
@@ -12,7 +12,7 @@
     <item
         android:id="@+id/cards"
         android:icon="@drawable/carts"
-        android:title="Card"
+        android:title="Giỏ hàng"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         app:cnb_backgroundColor="#00a5ff"
@@ -20,7 +20,7 @@
     <item
         android:id="@+id/order"
         android:icon="@drawable/shipped"
-        android:title="Order"
+        android:title="Đơn hàng"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         app:cnb_backgroundColor="#00a5ff"
@@ -28,7 +28,7 @@
     <item
         android:id="@+id/user"
         android:icon="@drawable/userprofile"
-        android:title="User"
+        android:title="Cá nhân"
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         app:cnb_backgroundColor="#00a5ff"

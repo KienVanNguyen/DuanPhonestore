@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/menu_item"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="8dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center"
+                android:src="@drawable/iphone13"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/bg_trangthaidonhang"
+                    android:gravity="center"
+                    android:text="Đang xác nhận"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_weight="8"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="Iphone 12 ProMax "
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="#000000" />
+
+                </LinearLayout>
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="Android"-->
+                <!--                    android:layout_marginTop="11dp"/>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="64.990.000 VND"
+                    android:textSize="16dp"
+                    android:textColor="#FF0000"/>
+                <LinearLayout
+                    android:weightSum="10"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_weight="7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Ngày: 20/12/2021"
+                        android:textSize="16dp"
+                        android:textColor="#000000"/>
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Số lượng: 2"
+                        android:textSize="16dp"
+                        android:textColor="#000000"/>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Địa chỉ: quận 12, hồ chí minh"
+                    android:textSize="16dp"
+                    android:textColor="#000000"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

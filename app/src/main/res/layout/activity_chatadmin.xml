@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    tools:context=".User.Activity.ChatadminActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_alignParentTop="true"
+        android:id="@+id/toolbarChatadmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00a5ff">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/round_background"
+            android:src="@drawable/operator" />
+
+        <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/shimmer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:maxLines="1"
+            android:text="Hỗ trợ admin"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:reflectionColor="#00a5ff" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarChatadmin"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="70dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_chatadmin"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Bạn cần chúng tôi hỗ trợ vấn đề gì?"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="5dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlSend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:paddingRight="0dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="70dp"
+            app:cardBackgroundColor="#DDDDDD"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEmailLo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@android:color/transparent"
+                android:drawablePadding="12dp"
+                android:hint="Nhập tin nhắn"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:minWidth="320dp"
+                android:minHeight="50dp"
+                android:singleLine="true" />
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="10dp"
+            android:src="@drawable/send"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</RelativeLayout>
