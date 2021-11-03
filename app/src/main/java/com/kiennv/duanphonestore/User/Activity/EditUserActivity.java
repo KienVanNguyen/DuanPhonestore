@@ -74,13 +74,11 @@ import java.util.Map;
 
 public class EditUserActivity extends AppCompatActivity {
 
-    private ImageView imgbackedit,floatingImageedit,imageedit;
+    private ImageView floatingImageedit,imageedit;
     private Button btnConfirmedit;
-    private TextInputEditText edtAddressedit,edtPhoneedit;
+    private TextInputEditText edtAddressedit,edtPhoneedit,edtNameedit;
     private TextView edtEmailedit;
-    private static final int GALLER_ACTION_PICK_CODE = 100;
-    private String phone,address,email, images;
-    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
+    private User user;
     private String URL_updateUser = " http://192.168.1.7/Duan/user/updateUser.php";
     private String encodeImageString;
     private Bitmap bitmap;
@@ -90,21 +88,25 @@ public class EditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
 
+
+
         floatingImageedit = findViewById(R.id.floatingImageedit);
         imageedit = findViewById(R.id.imageedit);
         btnConfirmedit = findViewById(R.id.btnConfirmedit);
         edtPhoneedit = findViewById(R.id.edtPhoneedit);
         edtAddressedit = findViewById(R.id.edtAddressedit);
         edtEmailedit = findViewById(R.id.edtEmailedit);
-
+        edtNameedit = findViewById(R.id.edtNameedit);
         //tro lai fragment
-        Toolbar toolbar = findViewById(R.id.toolbarEdituser);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.toolbarEdituser);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
+        //chuyen thong tin login sang
+        Intent intent = getIntent();
+        user = new User();
+        user = (User) intent.getSerializableExtra("edituser");
         //hien thi nguoi dung
         showAlluserdata();
 
@@ -180,7 +182,7 @@ public class EditUserActivity extends AppCompatActivity {
                         edtPhoneedit.setError( "Số điện thoại chỉ có 10 số, hãy kiểm tra lại." );
                     }
                     if(imageedit.getDrawable()==null){
-                        Toast.makeText( EditUserActivity.this, "Chua upload hinh anh", Toast.LENGTH_SHORT ).show();
+                        Toast.makeText( EditUserActivity.this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT ).show();
                     }
                 }
             }
@@ -188,40 +190,13 @@ public class EditUserActivity extends AppCompatActivity {
     }
     //lay du lieu nguoi dung ve
     private void showAlluserdata() {
-         email = edtEmailedit.getText().toString();
-         phone = edtPhoneedit.getText().toString();
-         address = edtAddressedit.getText().toString();
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+        Picasso.get().load(user.getImages()).into(imageedit);
+        edtEmailedit.setText(user.getEmail());
+        edtNameedit.setText(user.getFullName());
+        edtPhoneedit.setText(user.getPhone());
+        edtAddressedit.setText(user.getAddress());
 
-                    email = jsonObject.getString("email");
-                    phone = jsonObject.getString("phone");
-                    address = jsonObject.getString("address");
-                    images = jsonObject.getString("images");
-                    Picasso.get().load(images).into(imageedit);
-
-                    edtEmailedit.setText(email);
-                    edtPhoneedit.setText(phone);
-                    edtAddressedit.setText(address);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                error.printStackTrace();
-            }
-        });
-        queue.add(stringRequest);
 
     }
     //hinh anh

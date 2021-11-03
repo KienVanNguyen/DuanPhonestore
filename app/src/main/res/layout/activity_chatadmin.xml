@@ -74,12 +74,12 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="70dp"
+            android:layout_marginRight="55dp"
             app:cardBackgroundColor="#DDDDDD"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp">
@@ -103,8 +103,8 @@
         </androidx.cardview.widget.CardView>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingRight="10dp"

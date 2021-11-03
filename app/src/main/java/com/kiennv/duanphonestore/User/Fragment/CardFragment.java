@@ -1,5 +1,6 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,8 +42,7 @@ public class CardFragment extends Fragment {
     private static TextView tv_diachicard, txtPriceTongtienCard, tvThongBaoGH;
     private static RecyclerView rcv_giohang;
     private static GioHangAdater giohangAdapter;
-    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
-    private String address;
+    private User user;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,11 +58,20 @@ public class CardFragment extends Fragment {
         rcv_giohang.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rcv_giohang.setAdapter(giohangAdapter);
 
+        //chuyen thong tin login sang
+        Intent intent = getActivity().getIntent();
+        user = new User();
+        user = (User) intent.getSerializableExtra("login");
         //get thong tin dia chi
         tv_diachicard = v.findViewById(R.id.tv_diachicard);
-        diachiKH();
-        Evenutil();
-        checkData();
+
+        try {
+            diachiKH();
+            Evenutil();
+            checkData();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return v;
     }
@@ -91,31 +100,6 @@ public class CardFragment extends Fragment {
     }
     //lay thong tin dia chi khach hang
     private void diachiKH(){
-        address = tv_diachicard.getText().toString();
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    address = jsonObject.getString("address");
-
-                    tv_diachicard.setText(address);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                error.printStackTrace();
-            }
-        });
-        queue.add(stringRequest);
-
+        tv_diachicard.setText(user.getAddress());
     }
 }

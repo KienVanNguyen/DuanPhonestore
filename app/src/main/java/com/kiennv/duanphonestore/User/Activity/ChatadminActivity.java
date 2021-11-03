@@ -15,9 +15,9 @@ public class ChatadminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chatadmin);
 
         //tro lai fragment
-        Toolbar toolbar = findViewById(R.id.toolbarChatadmin);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.toolbarChatadmin);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

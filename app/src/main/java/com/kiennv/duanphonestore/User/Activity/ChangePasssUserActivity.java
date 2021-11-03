@@ -52,10 +52,10 @@ public class ChangePasssUserActivity extends AppCompatActivity {
         edtPasswordnewnhaplai = findViewById(R.id.edtPasswordnewnhaplai);
 
         //tro lai fragment
-        Toolbar toolbar = findViewById(R.id.toolbarDoimatkhau);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.toolbarDoimatkhau);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //thay doi mat khau
         btnConfirmchangle = findViewById(R.id.btnConfirmchangle);

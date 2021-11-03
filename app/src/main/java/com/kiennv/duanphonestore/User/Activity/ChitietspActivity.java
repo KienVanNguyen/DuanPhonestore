@@ -50,19 +50,21 @@ public class ChitietspActivity extends AppCompatActivity {
 
 
         //tro lai fragment
-        Toolbar toolbar = findViewById(R.id.toolbarCTSP);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = findViewById(R.id.toolbarCTSP);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //lay thong tin san pham
         GetInfomation();
 
-        //them san pham vao gio hang
-        Eventaddgiohang();
-
+        try {
+            //them san pham vao gio hang
+            Eventaddgiohang();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
 
     //lay thong tin san pham
     private void GetInfomation() {
@@ -103,7 +105,6 @@ public class ChitietspActivity extends AppCompatActivity {
     //an hien so luong san pham max min
     public void EventImages(){
         int soluong= Integer.parseInt(String.valueOf(number));
-        Log.e( "eventnumber: ",String.valueOf(number) );
         if(soluong>1){
             imgTruChitietsp.setVisibility(View.VISIBLE);
             imgCongChitietsp.setVisibility(View.VISIBLE);
@@ -150,14 +151,10 @@ public class ChitietspActivity extends AppCompatActivity {
                     int soluong= Integer.parseInt(String.valueOf(number));
                     long giamoi=soluong*gia;
                     MainActivity.listcard.add(new Card(id,ten,giamoi,hinhanh,soluong));
-                    Log.e("onClick: ", String.valueOf(number));
-                    Toast.makeText(getApplicationContext(),"themthanhconng",Toast.LENGTH_LONG).show();
-//                    new SweetAlertDialog(ChitietspActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-//                            .setTitleText("Thêm sản phẩm vào giỏ hàng thành công")
-//                            .show();
                 }
-                Intent intent=new Intent(getApplication(),MainActivity.class);
-                startActivity(intent);
+                new SweetAlertDialog(ChitietspActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Thêm sản phẩm vào giỏ hàng thành công")
+                        .show();
             }
         });
     }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,15 +69,10 @@ public class UserFragment extends Fragment {
     private Button logout;
     private TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
     private CircleImageView crice_imageuser;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private TextInputEditText edtPasswordchange;
-    private StorageReference storageReference;
-    private String profileid;
-    private GoogleSignInClient googleSignInClient;
-    private String name, phone,address, images;
-    private String URL_JSON = " http://192.168.1.7/Duan/user/user.php";
+    private TextInputEditText edtPasswordchange, edtEmailedituser222;
+    private User user;
     private String URL_getPass = " http://192.168.1.7/Duan/user/getpassword.php";
+    private String URL_edituser = "http://192.168.1.7/Duan/user/getEditUser.php";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,6 +85,8 @@ public class UserFragment extends Fragment {
         crice_imageuser = v.findViewById(R.id.crice_imageuser);
         txtChinhsuataikhoan = v.findViewById(R.id.txtChinhsuataikhoan);
         txtThaydoimatkhau = v.findViewById(R.id.txtThaydoimatkhau);
+
+
 
         //chuyen sang don hang da mua
         image_donhangvanchuyen = v.findViewById(R.id.image_donhangvanchuyen);
@@ -122,31 +120,77 @@ public class UserFragment extends Fragment {
             }
         });
 
-        fAuth = FirebaseAuth.getInstance();
-
-//        profileid = fAuth.getCurrentUser().getUid();
-        fStore = FirebaseFirestore.getInstance();
-
-        //google
-        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(getActivity());
-        if(signInAccount != null){
-            txtNameuser.setText(signInAccount.getDisplayName());
-        }
-        FirebaseUser firebaseUser = fAuth.getCurrentUser();
-        if (firebaseUser != null){
-            Glide.with(UserFragment.this)
-                    .load(firebaseUser.getPhotoUrl())
-                    .into(crice_imageuser);
-            txtNameuser.setText(firebaseUser.getDisplayName());
-        }
-        googleSignInClient = GoogleSignIn.getClient(getActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN);
-
         //chuyen sang man hinh chinh sua tai khoan
         txtChinhsuataikhoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EditUserActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_edit_email, null);
+                builder.setView(view)
+                        .setTitle("Thiết lập tài khoản")
+                        .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String emailedit = edtEmailedituser222.getText().toString();
+
+                                if(TextUtils.isEmpty(emailedit)){
+                                    edtEmailedituser222.setError("Chưa nhập Email");
+                                    return;
+                                }
+                                if (!emailedit.equals("")) {
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_edituser, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            String message = "";
+                                            try {
+                                                JSONObject jsonObject = new JSONObject(response);
+                                                if (jsonObject.getInt("success") == 1) {
+                                                    User account = new User();
+                                                    account.setFullName(jsonObject.getString("name"));
+                                                    account.setEmail(jsonObject.getString("email"));
+                                                    account.setPhone(jsonObject.getString("phone"));
+                                                    account.setAddress(jsonObject.getString("address"));
+                                                    account.setImages(jsonObject.getString("images"));
+                                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(getContext(), EditUserActivity.class);
+                                                    intent.putExtra("edituser", account);
+                                                    startActivity(intent);
+                                                } else {
+                                                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                                                            .setTitleText("Không có email người dùng đã tạo")
+                                                            .show();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }) {
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String, String> data = new HashMap<>();
+                                            data.put("email", emailedit);
+                                            return data;
+                                        }
+                                    };
+                                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                                    requestQueue.add(stringRequest);
+                                }
+                            }
+                        });
+                edtEmailedituser222 = view.findViewById(R.id.edtemailedituser222);
+                builder.create().show();
             }
         });
         //doi mat khau
@@ -157,7 +201,7 @@ public class UserFragment extends Fragment {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.dialog_change_pass, null);
                 builder.setView(view)
-                        .setTitle("Thay đổi mật khẩu")
+                        .setTitle("Thiết lập mật khẩu")
                         .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -209,9 +253,18 @@ public class UserFragment extends Fragment {
                 builder.create().show();
             }
         });
+        //chuyen thong tin login sang
+        Intent intent = getActivity().getIntent();
+        user = new User();
+        user = (User) intent.getSerializableExtra("login");
+        try {
+            //lay du lieu user
+            userInfo();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        //lay du lieu user
-        userInfo();
+
 
         //danh gia
         txtFeedback = v.findViewById(R.id.txtFeedback);
@@ -262,40 +315,15 @@ public class UserFragment extends Fragment {
     }
     //lay du lieu user
     private void userInfo(){
-        name = txtNameuser.getText().toString();
-        phone = txtPhoneuser.getText().toString();
-        address = txtAddressuser.getText().toString();
+//        Log.e( "info: ",String.valueOf(user.getEmail()) );
+//        Log.e( "info: ",String.valueOf(user.getPhone()) );
+//        Log.e( "info: ",String.valueOf(user.getAddress()) );
+        txtNameuser.setText(user.getFullName());
+        txtPhoneuser.setText(user.getPhone());
+        txtAddressuser.setText(user.getAddress());
+        Picasso.get().load(user.getImages()).into(crice_imageuser);
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_JSON, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-                    name  = jsonObject.getString("name");
-                    phone = jsonObject.getString("phone");
-                    address = jsonObject.getString("address");
-                    images = jsonObject.getString("images");
-                    Picasso.get().load(images).into(crice_imageuser);
-
-                    txtNameuser.setText(name);
-                    txtPhoneuser.setText(phone);
-                    txtAddressuser.setText(address);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                error.printStackTrace();
-            }
-        });
-        queue.add(stringRequest);
 
     }
     }

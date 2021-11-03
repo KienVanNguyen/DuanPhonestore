@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
@@ -17,6 +18,7 @@ import com.kiennv.duanphonestore.User.Fragment.HomeFragment;
 import com.kiennv.duanphonestore.User.Fragment.OrderFragment;
 import com.kiennv.duanphonestore.User.Fragment.UserFragment;
 import com.kiennv.duanphonestore.User.Model.Card;
+import com.kiennv.duanphonestore.User.Model.User;
 
 import java.util.ArrayList;
 
@@ -64,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragmentManager, fragment)
                             .commit();
-                }else {
-
                 }
             }
         });

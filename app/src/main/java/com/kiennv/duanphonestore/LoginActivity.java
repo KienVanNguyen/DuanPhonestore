@@ -51,8 +51,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kiennv.duanphonestore.User.Activity.EditUserActivity;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,10 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
-    private FirebaseAuth fAuth;
-    private GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN = 123;
     private String URL = "http://192.168.1.7/Duan/user/login.php";
+    private String URL_fogot_pass = "http://192.168.1.7/Duan/user/fogotpassword.php";
     private ImageView face,gg,twiter;
     float v=0;
 
@@ -133,14 +135,11 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1800).start();
 
 
-        fAuth = FirebaseAuth.getInstance();
-
         loginPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin == true) {
             edtEmailLo.setText(loginPreferences.getString("email", ""));
-            edtPassLo.setText(loginPreferences.getString("password", ""));
             checkbox_login.setChecked(true);
         }
         //login
@@ -168,22 +167,36 @@ public class LoginActivity extends AppCompatActivity {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
                             if (checkbox_login.isChecked()) {
                                 loginPrefsEditor.putBoolean( "saveLogin", true );
                                 loginPrefsEditor.putString( "email", email );
-                                loginPrefsEditor.putString( "password", password );
                                 loginPrefsEditor.commit();
                             } else {
                                 loginPrefsEditor.clear();
                                 loginPrefsEditor.commit();
                             }
-                            if (response.equals("success")) {
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else if (response.equals("false")) {
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                            String message = "";
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (jsonObject.getInt("success") == 1) {
+                                    User account = new User();
+                                    account.setFullName(jsonObject.getString("name"));
+                                    account.setEmail(jsonObject.getString("email"));
+                                    account.setPhone(jsonObject.getString("phone"));
+                                    account.setAddress(jsonObject.getString("address"));
+                                    account.setImages(jsonObject.getString("images"));
+                                    message = jsonObject.getString("message");
+                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("login", account);
+                                    startActivity(intent);
+                                } else {
+                                    message = jsonObject.getString("message");
+                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -202,10 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                     };
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     requestQueue.add(stringRequest);
-                }else {
-                    Toast.makeText(LoginActivity.this, "Login false", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -226,17 +236,30 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // extract the email and send reset link
                         String mail = resetMail.getText().toString();
-                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_fogot_pass, new Response.Listener<String>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(LoginActivity.this,  "Đã gửi liên kết đặt lại mật khẩu vào email", Toast.LENGTH_SHORT).show();
+                            public void onResponse(String response) {
+                                if (response.equals("success")){
+                                    Toast.makeText(LoginActivity.this, "Kiểm tra Email để lấy lại mật khẩu.", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    Toast.makeText(LoginActivity.this, "Gửi mật khẩu thất bại.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        }, new Response.ErrorListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LoginActivity.this, "Lỗi! Liên kết chưa được gửi", Toast.LENGTH_SHORT).show();
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(LoginActivity.this, "Kiểm tra đường truyền", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> data = new HashMap<>();
+                                data.put("email", mail);
+                                return data;
+                            }
+                        };
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        requestQueue.add(stringRequest);
                     }
                 });
                 passwordResetDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
@@ -264,7 +287,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Login Facebook hiện chưa phát triển")
+                        .setTitleText("Đăng nhập Facebook hiện chưa phát triển")
                         .show();
             }
         });
@@ -273,71 +296,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Login Twiter hiện chưa phát triển")
+                        .setTitleText("Đăng nhập Twiter hiện chưa phát triển")
                         .show();
             }
         });
 
         //login google
-        createRequest();
         gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Đăng nhập Google hiện chưa phát triển")
+                        .show();
             }
         });
 
 
     }
-    //phan dang nhap google
-    private void createRequest() {
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-    }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                // ...
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        fAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "Login với Google thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Login với Google thất bại", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
     //hien thi mat khau
 //    public void ShowHidePass(View view){
 //

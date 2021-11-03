@@ -26,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +50,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -105,11 +109,9 @@ public class RegisterActivity extends AppCompatActivity {
         edtPhoneRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(800).start();
         edtAddressRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1000).start();
         edtPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
+        edtConfirmPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
 
-        edtConfirmPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1600).start();
-
-
-
+        //hinh anh
         crice_register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int[] count = {0};
 
                 final String email = edtEmailRe.getText().toString().trim();
                 final String password = edtPassRe.getText().toString().trim();
@@ -153,11 +154,6 @@ public class RegisterActivity extends AppCompatActivity {
                 //kiem tra loi form
                 if (crice_register.getDrawable() == null) {
                     Toast.makeText(RegisterActivity.this, "Bạn chưa chọn ảnh", Toast.LENGTH_SHORT).show();
-
-                }
-                if (TextUtils.isEmpty(email)) {
-                    edtNameRe.setError("Chưa nhập Email");
-                    return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     edtPassRe.setError("Chưa nhập mật khẩu");
@@ -186,14 +182,33 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!password.equals(cofirmpassword)) {
                     Toast.makeText(RegisterActivity.this, "Mật khẩu không giống nhau", Toast.LENGTH_SHORT).show();
                 }
-                else if (!fullName.equals("") && !email.equals("") && !phone.equals("") && !address.equals("") && !password.equals("")){
+                else if (!fullName.equals("") && isValidEmail(email) && !phone.equals("") && !address.equals("") && !password.equals("") && crice_register.getDrawable() == null){
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                                Toast.makeText(getApplicationContext(), "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                finish();
+                            String message = "";
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (jsonObject.getInt("success") == 1) {
+                                    User account = new User();
+                                    account.setFullName(jsonObject.getString("name"));
+                                    account.setEmail(jsonObject.getString("email"));
+                                    account.setPhone(jsonObject.getString("phone"));
+                                    account.setAddress(jsonObject.getString("address"));
+                                    account.setImages(jsonObject.getString("images"));
+                                    message = jsonObject.getString("message");
+                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                    //Start LoginActivity
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    message = jsonObject.getString("message");
+                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException error) {
+                                error.printStackTrace();
+                            }
 
                         }
                     }, new Response.ErrorListener() {
@@ -203,7 +218,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }){
                         @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
+                        protected Map<String, String> getParams()  {
                             Map<String, String> data = new HashMap<>();
                             data.put("name", fullName);
                             data.put("email", email);
@@ -228,6 +243,16 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    //bat loi dinh dang email
+    private boolean isValidEmail(String target) {
+        if (target.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+"))
+            return true;
+        else {
+            edtEmailRe.setError("Email sai định dạng! (abc@gmail.com)");
+        }
+        return false;
     }
 
     private void encodeBitmapImage(Bitmap bitmap)

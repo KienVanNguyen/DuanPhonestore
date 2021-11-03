@@ -1,6 +1,8 @@
 package com.kiennv.duanphonestore.User.Model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private int id;
     private String phone, password, fullName, email, address;
     private String images;
