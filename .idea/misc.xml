@@ -11,6 +11,7 @@
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/search_btn.xml" value="0.2703125" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable-v24/useritem.xml" value="0.2703125" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_chatadmin.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_cmt.xml" value="0.26205128205128203" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_itemcard.xml" value="0.26614583333333336" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_trangthaidonhang.xml" value="0.26614583333333336" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/bg_vanchuyen.xml" value="0.2703125" />
@@ -41,6 +42,7 @@
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_oder_succes.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_order_succes.xml" value="0.2359375" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_rating_dialog.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_trangthaidonhang.xml" value="0.264" />
@@ -50,12 +52,14 @@
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/dialog_edit_email.xml" value="0.25" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_card.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_oder_success.xml" value="0.25" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_order.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/fragment_user.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_card.xml" value="0.4" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_comment.xml" value="0.4" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_sanpham.xml" value="0.264" />
-        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_tinhtrang_donhang.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_tinhtrang_donhang.xml" value="0.4" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/item_trangthaidonhang.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/manhinhchao.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/menu/menu_bottom.xml" value="0.25416666666666665" />

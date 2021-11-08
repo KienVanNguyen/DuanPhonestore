@@ -19,30 +19,36 @@
         <activity
             android:name=".User.Activity.ChatadminActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity"/>
+            />
+        <activity
+            android:name=".User.Activity.OrderSuccesActivity"
+            android:exported="true"
+            >
+
+        </activity>
         <activity
             android:name=".User.Activity.XemAllSPMoinhatActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity" />
+            />
         <activity
             android:name=".User.Activity.ChangePasssUserActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity" />
+            />
         <activity
             android:name=".User.Activity.EditUserActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity" />
+            />
         <activity
             android:name=".User.Activity.ChitietTTdonhangActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity" />
-        <activity
-            android:name=".User.Activity.OderSuccesActivity"
-            android:exported="true" />
+             />
         <activity
             android:name=".User.Activity.ChitietspActivity"
             android:exported="true"
-            android:parentActivityName=".User.MainActivity" />
+          >
+
+        </activity>
+
         <activity android:name=".User.MainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fafafa"
     android:weightSum="10"
     tools:context=".User.Activity.ChitietspActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCTSP"
         android:layout_width="match_parent"
@@ -27,13 +27,21 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
+
     <ImageView
         android:id="@+id/imgProduct"
         android:src="@drawable/iphone13"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="10dp"/>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ScrollView
+         android:layout_marginBottom="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.google.android.material.card.MaterialCardView
         style="@style/MyCardView"
         android:layout_width="match_parent"
@@ -41,7 +49,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:orientation="vertical">
             <LinearLayout
                 android:weightSum="10"
@@ -76,26 +83,12 @@
                 android:layout_marginLeft="15dp"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
                 />
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="190dp">
-
-                <TextView
-                    android:id="@+id/txtChitietProduct"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:paddingBottom="20dp"
-                    android:text="iPhone 13 Pro Max - siêu phẩm được mong chờ nhất ở nửa cuối năm 2021 đến từ Apple. Máy có thiết kế không mấy đột phá khi so với người tiền nhiệm, bên trong đây vẫn là một sản phẩm có màn hình siêu đẹp, tần số quét được nâng cấp lên 120 Hz mượt mà, cảm biến camera có kích thước lớn hơn, cùng hiệu năng mạnh mẽ với sức mạnh đến từ Apple A15 Bionic, sẵn sàng cùng bạn chinh phục mọi thử thách."
-                    android:textColor="#000000"
-                    android:textSize="20dp" />
-            </ScrollView>
-
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
+                android:layout_marginTop="-15dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:layout_gravity="center"
@@ -128,59 +121,117 @@
                     android:layout_marginTop="5dp"
                     android:src="@drawable/plus"/>
             </LinearLayout>
+<!--            <ScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txtChitietProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="iPhone 13 Pro Max - siêu phẩm được mong chờ nhất ở nửa cuối năm 2021 đến từ Apple. Máy có thiết kế không mấy đột phá khi so với người tiền nhiệm, bên trong đây vẫn là một sản phẩm có màn hình siêu đẹp, tần số quét được nâng cấp lên 120 Hz mượt mà, cảm biến camera có kích thước lớn hơn, cùng hiệu năng mạnh mẽ với sức mạnh đến từ Apple A15 Bionic, sẵn sàng cùng bạn chinh phục mọi thử thách."
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
+<!--            </ScrollView>-->
 
-            <LinearLayout
+            <TextView
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:text="Phản hồi và đánh giá"
+                android:textSize="20dp"
+                android:drawableLeft="@drawable/cmt"
+                android:drawablePadding="10dp"
+                android:textStyle="bold"
+                android:textColor="#000000"/>
 
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/chitietspsize"
-                    android:gravity="center"
-                    android:text="64GB"
-                    android:textColor="#000000" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_weight="9"
+                android:layout_marginTop="5dp"
 
-                <TextView
-                    android:layout_width="50dp"
+                android:background="@drawable/bg_cmt"
+                android:hint="Phản hồi"
+             />
+                <ImageView
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:layout_width="30dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/chitietspsize"
-                    android:gravity="center"
-                    android:text="128GB"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/chitietspsize"
-                    android:gravity="center"
-                    android:text="256GB"
-                    android:textColor="#000000" />
+                    android:src="@drawable/send"/>
             </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
+
+        <RelativeLayout
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:gravity="bottom"-->
+            <!--                android:orientation="horizontal">-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="50dp"-->
+            <!--                    android:layout_height="30dp"-->
+            <!--                    android:layout_marginLeft="20dp"-->
+            <!--                    android:background="@drawable/chitietspsize"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:text="64GB"-->
+            <!--                    android:textColor="#000000" />-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="50dp"-->
+            <!--                    android:layout_height="30dp"-->
+            <!--                    android:layout_marginLeft="10dp"-->
+            <!--                    android:background="@drawable/chitietspsize"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:text="128GB"-->
+            <!--                    android:textColor="#000000" />-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="50dp"-->
+            <!--                    android:layout_height="30dp"-->
+            <!--                    android:layout_marginLeft="10dp"-->
+            <!--                    android:background="@drawable/chitietspsize"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:text="256GB"-->
+            <!--                    android:textColor="#000000" />-->
+            <!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/btnaddcardProduct"
                 android:textColor="#FFF"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_alignParentBottom="true"
                 android:text="Thêm giỏ hàng"
+                android:drawableLeft="@drawable/addcart"
                 android:background="@drawable/login_button_bk"
                 android:textAllCaps="false"
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"/>
-          </RelativeLayout>
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
+                android:layout_height="45dp"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

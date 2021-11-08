@@ -14,10 +14,5 @@ public class ChitietTTdonhangActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chitiet_ttdonhang);
 
-        //tro lai fragment
-//        Toolbar toolbar = findViewById(R.id.toolbarTTDH);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

@@ -65,14 +65,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserFragment extends Fragment {
-    private ImageView image_donhangvanchuyen,img_carduser,img_chatadminuser;
-    private Button logout;
-    private TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
-    private CircleImageView crice_imageuser;
-    private TextInputEditText edtPasswordchange, edtEmailedituser222;
-    private User user;
-    private String URL_getPass = " http://192.168.1.7/Duan/user/getpassword.php";
-    private String URL_edituser = "http://192.168.1.7/Duan/user/getEditUser.php";
+    private static ImageView image_donhangvanchuyen,img_carduser,img_chatadminuser;
+    private static Button logout;
+    private static TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
+    private static CircleImageView crice_imageuser;
+    private static TextInputEditText edtPasswordchange, edtEmailedituser222;
+    private static User user;
+    private static String URL_getPass = " http://10.0.2.2/Duan/user/getpassword.php";
+    private static String URL_edituser = "http://10.0.2.2/Duan/user/getEditUser.php";
+    private static int id=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -153,6 +154,8 @@ public class UserFragment extends Fragment {
                                                 JSONObject jsonObject = new JSONObject(response);
                                                 if (jsonObject.getInt("success") == 1) {
                                                     User account = new User();
+
+                                                    account.setId(jsonObject.getInt("id"));
                                                     account.setFullName(jsonObject.getString("name"));
                                                     account.setEmail(jsonObject.getString("email"));
                                                     account.setPhone(jsonObject.getString("phone"));
@@ -180,6 +183,7 @@ public class UserFragment extends Fragment {
                                         @Override
                                         protected Map<String, String> getParams() throws AuthFailureError {
                                             Map<String, String> data = new HashMap<>();
+//                                            data.put("id", String.valueOf(id));
                                             data.put("email", emailedit);
                                             return data;
                                         }
@@ -322,9 +326,6 @@ public class UserFragment extends Fragment {
         txtPhoneuser.setText(user.getPhone());
         txtAddressuser.setText(user.getAddress());
         Picasso.get().load(user.getImages()).into(crice_imageuser);
-
-
-
     }
     }
 

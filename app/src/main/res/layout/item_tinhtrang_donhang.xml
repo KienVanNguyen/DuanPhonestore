@@ -22,7 +22,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
-                android:src="@drawable/iphone13"/>
+                android:src="@drawable/surveyor"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,40 +31,49 @@
                 android:layout_marginLeft="20dp">
 
                 <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:drawableLeft="@drawable/statusicon"
                     android:layout_gravity="right"
                     android:background="@drawable/bg_trangthaidonhang"
                     android:gravity="center"
-                    android:text="Đang xác nhận"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Chờ xác nhận"
                     android:textColor="#ffffff"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/idMaTTGH"
                         android:layout_weight="8"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="Iphone 12 ProMax "
-                        android:textSize="20dp"
-                        android:textStyle="bold"
+                        android:text="ma hang: 8"
+                        android:textSize="18dp"
                         android:textColor="#000000" />
 
                 </LinearLayout>
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="Android"-->
-                <!--                    android:layout_marginTop="11dp"/>-->
                 <TextView
+                    android:id="@+id/statusTTGH"
+                    android:textSize="16dp"
+                    android:drawableLeft="@drawable/money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:text="chua thanh toan"
+                    android:textColor="#00a5ff"
+                    android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/PriceTTGH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="64.990.000 VND"
                     android:textSize="16dp"
                     android:textColor="#FF0000"/>
@@ -74,7 +83,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_weight="7"
+                        android:id="@+id/DateTTGH"
+                        android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -82,21 +92,22 @@
                         android:textSize="16dp"
                         android:textColor="#000000"/>
                     <TextView
-                        android:layout_weight="3"
+                        android:id="@+id/receivedDateTTGH"
+                        android:layout_weight="5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Số lượng: 2"
+                        android:text="Ngày: 20/12/2021"
                         android:textSize="16dp"
                         android:textColor="#000000"/>
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Địa chỉ: quận 12, hồ chí minh"
-                    android:textSize="16dp"
-                    android:textColor="#000000"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Địa chỉ: quận 12, hồ chí minh"-->
+<!--                    android:textSize="16dp"-->
+<!--                    android:textColor="#000000"/>-->
             </LinearLayout>
         </LinearLayout>
 

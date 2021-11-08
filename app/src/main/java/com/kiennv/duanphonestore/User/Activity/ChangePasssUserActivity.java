@@ -38,10 +38,10 @@ import java.util.Map;
 
 public class ChangePasssUserActivity extends AppCompatActivity {
 
-    private ImageView imgchanglepass;
-    private TextInputEditText edtPasswordnewchange,edtPasswordnewnhaplai;
-    private Button btnConfirmchangle;
-    private String URL_updatePass = " http://192.168.1.7/Duan/user/updatePassword.php";
+    private static ImageView imgchanglepass;
+    private static TextInputEditText edtPasswordnewchange,edtPasswordnewnhaplai;
+    private static Button btnConfirmchangle;
+    private static String URL_updatePass = " http://10.0.2.2/Duan/user/updatePassword.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

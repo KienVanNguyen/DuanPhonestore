@@ -4,10 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#00a5ff"
-    tools:context=".User.Activity.OderSuccesActivity">
-
+    tools:context=".User.Activity.OrderSuccesActivity">
     <ImageView
         android:id="@+id/l1"
         android:layout_width="wrap_content"
@@ -27,11 +25,11 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:src="@drawable/ordersuccess"/>
-<!--        <ImageView-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:src="@drawable/checked"/>-->
+        <!--        <ImageView-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_width="150dp"-->
+        <!--            android:layout_height="150dp"-->
+        <!--            android:src="@drawable/checked"/>-->
         <TextView
             android:layout_marginTop="20dp"
             android:textAlignment="center"
@@ -50,5 +48,4 @@
 
             />
     </androidx.cardview.widget.CardView>
-
 </RelativeLayout>

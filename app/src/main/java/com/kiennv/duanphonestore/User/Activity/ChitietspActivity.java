@@ -26,14 +26,14 @@ import java.util.ArrayList;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ChitietspActivity extends AppCompatActivity {
-    private ImageView imgProduct,imgTruChitietsp,imgCongChitietsp;
-    private Button btnaddcardProduct;
-    private TextView txtNameProduct, txtGiaProduct,txtChitietProduct,txtSoluongChitietsp;
-    private String mota="";
-    private String ten="";
-    private int gia=0,id=0;
-    private String hinhanh="";
-    private int number=1;
+    private static ImageView imgProduct,imgTruChitietsp,imgCongChitietsp;
+    private static Button btnaddcardProduct;
+    private static TextView txtNameProduct, txtGiaProduct,txtChitietProduct,txtSoluongChitietsp;
+    private static String mota="";
+    private static String ten="";
+    private static int gia=0,id=0;
+    private static String hinhanh="";
+    private static int number=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,10 @@ public class ChitietspActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
     }
+
 
     //lay thong tin san pham
     private void GetInfomation() {

@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Uri filepath;
     float v=0;
     private String encodeImageString;
-    private String URL = "http://192.168.1.7/Duan/user/register.php";
+    private String URL = "http://10.0.2.2/Duan/user/register.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!password.equals(cofirmpassword)) {
                     Toast.makeText(RegisterActivity.this, "Mật khẩu không giống nhau", Toast.LENGTH_SHORT).show();
                 }
-                else if (!fullName.equals("") && isValidEmail(email) && !phone.equals("") && !address.equals("") && !password.equals("") && crice_register.getDrawable() == null){
+                else if (!fullName.equals("") && isValidEmail(email) && !phone.equals("") && !address.equals("") && !password.equals("") ){
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

@@ -18,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,15 +75,16 @@ import java.util.Map;
 
 public class EditUserActivity extends AppCompatActivity {
 
-    private ImageView floatingImageedit,imageedit;
-    private Button btnConfirmedit;
-    private TextInputEditText edtAddressedit,edtPhoneedit,edtNameedit;
-    private TextView edtEmailedit;
-    private User user;
-    private String URL_updateUser = " http://192.168.1.7/Duan/user/updateUser.php";
-    private String encodeImageString;
-    private Bitmap bitmap;
-    private Uri filepath;
+    private static ImageView floatingImageedit,imageedit;
+    private static Button btnConfirmedit;
+    private static TextInputEditText edtAddressedit,edtPhoneedit,edtNameedit;
+    private static TextView edtEmailedit;
+    private static User user;
+    private static String URL_updateUser = " http://10.0.2.2/Duan/user/updateUser.php";
+    private static String encodeImageString;
+    private static Bitmap bitmap;
+    private static Uri filepath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +109,8 @@ public class EditUserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = new User();
         user = (User) intent.getSerializableExtra("edituser");
+        Log.e( "onBindViewHolder: ",String.valueOf(user.getId()));
+        Log.e( "onBindViewHolder: ",String.valueOf(user.getEmail()));
         //hien thi nguoi dung
         showAlluserdata();
 
@@ -145,16 +149,34 @@ public class EditUserActivity extends AppCompatActivity {
             public void onClick(View v) {
                     String phone = edtPhoneedit.getText().toString();
                     String address = edtAddressedit.getText().toString();
+                    String name = edtNameedit.getText().toString();
 
-                if(phone.length()==10 && imageedit.getDrawable()!=null) {
+                if(!name.equals("") &&phone.length()==10 && imageedit.getDrawable()!=null) {
                     StringRequest request = new StringRequest(Request.Method.POST, URL_updateUser,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Intent intent = new Intent(EditUserActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                    Toast.makeText(EditUserActivity.this, "Thiết lập tài khoản thành công", Toast.LENGTH_SHORT).show();
+                                    String message = "";
+
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        if (jsonObject.getInt("success") == 1) {
+                                            User account = new User();
+                                            account.setFullName(jsonObject.getString("name"));
+                                            account.setPhone(jsonObject.getString("phone"));
+                                            account.setAddress(jsonObject.getString("address"));
+                                            account.setImages(jsonObject.getString("images"));
+                                            message = jsonObject.getString("message");
+                                            Toast.makeText(EditUserActivity.this, message, Toast.LENGTH_LONG).show();
+
+                                        } else {
+                                            message = jsonObject.getString("message");
+                                            Toast.makeText(EditUserActivity.this, message, Toast.LENGTH_LONG).show();
+                                        }
+                                    } catch (JSONException error) {
+                                        error.printStackTrace();
+                                    }
+
 
                                 }
                             }, new Response.ErrorListener() {
@@ -165,8 +187,8 @@ public class EditUserActivity extends AppCompatActivity {
                     }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
-
                             Map<String, String> params = new HashMap<>();
+                            params.put("name", name);
                             params.put("phone", phone);
                             params.put("address", address);
                             params.put("upload", encodeImageString);
@@ -190,13 +212,11 @@ public class EditUserActivity extends AppCompatActivity {
     }
     //lay du lieu nguoi dung ve
     private void showAlluserdata() {
-
         Picasso.get().load(user.getImages()).into(imageedit);
         edtEmailedit.setText(user.getEmail());
         edtNameedit.setText(user.getFullName());
         edtPhoneedit.setText(user.getPhone());
         edtAddressedit.setText(user.getAddress());
-
 
     }
     //hinh anh

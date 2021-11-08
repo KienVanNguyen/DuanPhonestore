@@ -43,17 +43,18 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    private Shimmer shimmer;
-    private ShimmerTextView shimmerTextView;
-    private ViewFlipper viewFlipper;
-    private ImageView img_cardhome;
-    private RecyclerView rcv_spmoinhat,rcv_spbanchay;
-    private EditText edtTimKiem;
-    private SanPhamAdapter sanPhamAdapter;
-    private List<SanPham> sanPhamList;
-    private RequestQueue requestQueue;
-    private TextView txtSeeallSPmoinhat;
-    private static String URL_ShowSP= "http://192.168.1.7/Duan/question/readDSMN.php";
+
+    private static Shimmer shimmer;
+    private static ShimmerTextView shimmerTextView;
+    private static ViewFlipper viewFlipper;
+    private static ImageView img_cardhome;
+    private static RecyclerView rcv_spmoinhat,rcv_spbanchay;
+    private static EditText edtTimKiem;
+    private static SanPhamAdapter sanPhamAdapter;
+    private static List<SanPham> sanPhamList;
+    private static RequestQueue requestQueue;
+    private static TextView txtSeeallSPmoinhat;
+    private static String URL_ShowSP= "http://10.0.2.2/Duan/question/readDSMN.php";
 
     //an thanh navigation bar khi su dung ban phim
     @Override

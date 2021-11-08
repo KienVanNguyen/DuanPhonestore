@@ -13,7 +13,6 @@ public class ChatadminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatadmin);
-
         //tro lai fragment
 //        Toolbar toolbar = findViewById(R.id.toolbarChatadmin);
 //        setSupportActionBar(toolbar);

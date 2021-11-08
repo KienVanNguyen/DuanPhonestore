@@ -73,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences loginPreferences;
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
-    private String URL = "http://192.168.1.7/Duan/user/login.php";
-    private String URL_fogot_pass = "http://192.168.1.7/Duan/user/fogotpassword.php";
+    private String URL = "http://10.0.2.2/Duan/user/login.php";
+    private String URL_fogot_pass = "http://10.0.2.2/Duan/user/fogotpassword.php";
     private ImageView face,gg,twiter;
     float v=0;
 
@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (jsonObject.getInt("success") == 1) {
                                     User account = new User();
+                                    account.setId(jsonObject.getInt("id"));
                                     account.setFullName(jsonObject.getString("name"));
                                     account.setEmail(jsonObject.getString("email"));
                                     account.setPhone(jsonObject.getString("phone"));
@@ -248,7 +249,7 @@ public class LoginActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(LoginActivity.this, "Kiểm tra đường truyền", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Kiểm tra", Toast.LENGTH_SHORT).show();
                             }
                         }){
                             @Override
