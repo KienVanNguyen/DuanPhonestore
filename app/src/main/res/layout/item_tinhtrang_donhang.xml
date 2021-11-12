@@ -7,7 +7,6 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/menu_item"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
         android:layout_margin="5dp"
         app:cardCornerRadius="8dp"
         android:layout_height="wrap_content">

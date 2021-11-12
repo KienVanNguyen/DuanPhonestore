@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -75,15 +77,15 @@ import java.util.Map;
 
 public class EditUserActivity extends AppCompatActivity {
 
-    private static ImageView floatingImageedit,imageedit;
-    private static Button btnConfirmedit;
-    private static TextInputEditText edtAddressedit,edtPhoneedit,edtNameedit;
-    private static TextView edtEmailedit;
-    private static User user;
-    private static String URL_updateUser = " http://10.0.2.2/Duan/user/updateUser.php";
-    private static String encodeImageString;
-    private static Bitmap bitmap;
-    private static Uri filepath;
+    private ImageView floatingImageedit,imageedit;
+    private Button btnConfirmedit;
+    private TextInputEditText edtAddressedit,edtPhoneedit,edtNameedit;
+    private TextView edtEmailedit;
+    private int id=0;
+    private String URL_updateUser = "http://10.0.2.2/Duan/user/updateUser.php";
+    private String encodeImageString;
+    private Bitmap bitmap;
+    private Uri filepath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,18 +101,12 @@ public class EditUserActivity extends AppCompatActivity {
         edtAddressedit = findViewById(R.id.edtAddressedit);
         edtEmailedit = findViewById(R.id.edtEmailedit);
         edtNameedit = findViewById(R.id.edtNameedit);
-        //tro lai fragment
-//        Toolbar toolbar = findViewById(R.id.toolbarEdituser);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //chuyen thong tin login sang
-        Intent intent = getIntent();
-        user = new User();
-        user = (User) intent.getSerializableExtra("edituser");
-        Log.e( "onBindViewHolder: ",String.valueOf(user.getId()));
-        Log.e( "onBindViewHolder: ",String.valueOf(user.getEmail()));
+        //lay id nguoi dung ve de update
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        id = sp.getInt("id", 0);
+//        Log.e( "onBindViewHolder: ", String.valueOf(sp.getInt("id", 0)));
+
         //hien thi nguoi dung
         showAlluserdata();
 
@@ -151,24 +147,26 @@ public class EditUserActivity extends AppCompatActivity {
                     String address = edtAddressedit.getText().toString();
                     String name = edtNameedit.getText().toString();
 
-                if(!name.equals("") &&phone.length()==10 && imageedit.getDrawable()!=null) {
-                    StringRequest request = new StringRequest(Request.Method.POST, URL_updateUser,
-                            new Response.Listener<String>() {
+                if(!name.equals("") && phone.length()==10 && imageedit.getDrawable()!=null) {
+                    StringRequest request = new StringRequest(Request.Method.POST, URL_updateUser, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     String message = "";
-
                                     try {
+//                                        Log.i("tagconvertstr", "["+response+"]");
                                         JSONObject jsonObject = new JSONObject(response);
                                         if (jsonObject.getInt("success") == 1) {
                                             User account = new User();
+                                            account.setId(jsonObject.getInt("id"));
                                             account.setFullName(jsonObject.getString("name"));
                                             account.setPhone(jsonObject.getString("phone"));
                                             account.setAddress(jsonObject.getString("address"));
                                             account.setImages(jsonObject.getString("images"));
                                             message = jsonObject.getString("message");
                                             Toast.makeText(EditUserActivity.this, message, Toast.LENGTH_LONG).show();
-
+                                            Intent intent = new Intent(EditUserActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                         } else {
                                             message = jsonObject.getString("message");
                                             Toast.makeText(EditUserActivity.this, message, Toast.LENGTH_LONG).show();
@@ -182,12 +180,13 @@ public class EditUserActivity extends AppCompatActivity {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Toast.makeText(getApplicationContext(), "Cập nhập lại đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
+                            params.put("id", String.valueOf(id));
                             params.put("name", name);
                             params.put("phone", phone);
                             params.put("address", address);
@@ -212,17 +211,27 @@ public class EditUserActivity extends AppCompatActivity {
     }
     //lay du lieu nguoi dung ve
     private void showAlluserdata() {
-        Picasso.get().load(user.getImages()).into(imageedit);
-        edtEmailedit.setText(user.getEmail());
-        edtNameedit.setText(user.getFullName());
-        edtPhoneedit.setText(user.getPhone());
-        edtAddressedit.setText(user.getAddress());
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+//        Log.e( "onBindViewHolder: ",sp.getString("images",""));
+//        Log.e( "onBindViewHolder: ",sp.getString("name",""));
+
+        String image = sp.getString("images", "");
+        String email = sp.getString("email", "");
+        String name = sp.getString("name", "");
+        String phone = sp.getString("phone", "");
+        String address = sp.getString("address", "");
+        Picasso.get().load(image).into(imageedit);
+        edtEmailedit.setText(email);
+        edtNameedit.setText(name);
+        edtPhoneedit.setText(phone);
+        edtAddressedit.setText(address);
 
     }
     //hinh anh
     private void encodeBitmapImage(Bitmap bitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
         byte[] bytesofimage=byteArrayOutputStream.toByteArray();
         encodeImageString=android.util.Base64.encodeToString(bytesofimage, Base64.DEFAULT);

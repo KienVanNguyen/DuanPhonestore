@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
         sanPhamList = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(getContext());
         showSanphammoinhat();
-//        showSanphambanchay();
+        showSanphamnoibat();
 
         //chuyen sang gio hang
         img_cardhome = v.findViewById(R.id.img_cardhome);
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
     }
 
     //show sp
-    private void showSanphambanchay() {
+    private void showSanphamnoibat() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_ShowSP, null,
                 new Response.Listener<JSONObject>() {
                     @Override

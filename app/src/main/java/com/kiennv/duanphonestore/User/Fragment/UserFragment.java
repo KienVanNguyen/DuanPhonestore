@@ -1,7 +1,11 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -57,7 +61,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -70,9 +76,8 @@ public class UserFragment extends Fragment {
     private static TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
     private static CircleImageView crice_imageuser;
     private static TextInputEditText edtPasswordchange, edtEmailedituser222;
-    private static User user;
+    private List<User> userList= new ArrayList<>();
     private static String URL_getPass = " http://10.0.2.2/Duan/user/getpassword.php";
-    private static String URL_edituser = "http://10.0.2.2/Duan/user/getEditUser.php";
     private static int id=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +92,9 @@ public class UserFragment extends Fragment {
         txtChinhsuataikhoan = v.findViewById(R.id.txtChinhsuataikhoan);
         txtThaydoimatkhau = v.findViewById(R.id.txtThaydoimatkhau);
 
-
+        //lay id nguoi dung ve de update
+        SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        id = sp.getInt("id", 0);
 
         //chuyen sang don hang da mua
         image_donhangvanchuyen = v.findViewById(R.id.image_donhangvanchuyen);
@@ -125,76 +132,8 @@ public class UserFragment extends Fragment {
         txtChinhsuataikhoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View view = inflater.inflate(R.layout.dialog_edit_email, null);
-                builder.setView(view)
-                        .setTitle("Thiết lập tài khoản")
-                        .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String emailedit = edtEmailedituser222.getText().toString();
-
-                                if(TextUtils.isEmpty(emailedit)){
-                                    edtEmailedituser222.setError("Chưa nhập Email");
-                                    return;
-                                }
-                                if (!emailedit.equals("")) {
-                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_edituser, new Response.Listener<String>() {
-                                        @Override
-                                        public void onResponse(String response) {
-                                            String message = "";
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(response);
-                                                if (jsonObject.getInt("success") == 1) {
-                                                    User account = new User();
-
-                                                    account.setId(jsonObject.getInt("id"));
-                                                    account.setFullName(jsonObject.getString("name"));
-                                                    account.setEmail(jsonObject.getString("email"));
-                                                    account.setPhone(jsonObject.getString("phone"));
-                                                    account.setAddress(jsonObject.getString("address"));
-                                                    account.setImages(jsonObject.getString("images"));
-                                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(getContext(), EditUserActivity.class);
-                                                    intent.putExtra("edituser", account);
-                                                    startActivity(intent);
-                                                } else {
-                                                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                                                            .setTitleText("Không có email người dùng đã tạo")
-                                                            .show();
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }) {
-                                        @Override
-                                        protected Map<String, String> getParams() throws AuthFailureError {
-                                            Map<String, String> data = new HashMap<>();
-//                                            data.put("id", String.valueOf(id));
-                                            data.put("email", emailedit);
-                                            return data;
-                                        }
-                                    };
-                                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                                    requestQueue.add(stringRequest);
-                                }
-                            }
-                        });
-                edtEmailedituser222 = view.findViewById(R.id.edtemailedituser222);
-                builder.create().show();
+                Intent intent = new Intent(getContext(), EditUserActivity.class);
+                startActivity(intent);
             }
         });
         //doi mat khau
@@ -244,6 +183,7 @@ public class UserFragment extends Fragment {
                                         protected Map<String, String> getParams() throws AuthFailureError {
                                             Map<String, String> data = new HashMap<>();
                                             data.put("password", password);
+                                            data.put("id", String.valueOf(id));
                                             return data;
                                         }
                                     };
@@ -257,10 +197,8 @@ public class UserFragment extends Fragment {
                 builder.create().show();
             }
         });
-        //chuyen thong tin login sang
-        Intent intent = getActivity().getIntent();
-        user = new User();
-        user = (User) intent.getSerializableExtra("login");
+
+
         try {
             //lay du lieu user
             userInfo();
@@ -319,13 +257,19 @@ public class UserFragment extends Fragment {
     }
     //lay du lieu user
     private void userInfo(){
+        SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
 //        Log.e( "info: ",String.valueOf(user.getEmail()) );
 //        Log.e( "info: ",String.valueOf(user.getPhone()) );
 //        Log.e( "info: ",String.valueOf(user.getAddress()) );
-        txtNameuser.setText(user.getFullName());
-        txtPhoneuser.setText(user.getPhone());
-        txtAddressuser.setText(user.getAddress());
-        Picasso.get().load(user.getImages()).into(crice_imageuser);
+        String image = sp.getString("images", "");
+        String name = sp.getString("name", "");
+        String phone = sp.getString("phone", "");
+        String address = sp.getString("address", "");
+        txtNameuser.setText(name);
+        txtPhoneuser.setText(phone);
+        txtAddressuser.setText(address);
+        Picasso.get().load(image).into(crice_imageuser);
+
     }
-    }
+}
 

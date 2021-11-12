@@ -86,8 +86,6 @@ public class OrderFragment extends Fragment {
                     String Date="";
                     String status="";
                     String receivedDate="";
-
-
                         try {
                             JSONArray jsonArray=new JSONArray(response);
                             for(int i =0;i<jsonArray.length();i++) {
@@ -101,7 +99,7 @@ public class OrderFragment extends Fragment {
                                 receivedDate = jsonObject.getString("receivedDate");
                                 //get ve mang
                                 cardSTTList.add(new CardSTT(idTTGH, IdUser, giaTTGH, Date,status,receivedDate));
-                                Log.e( "onBindViewHolder1111: ",String.valueOf(status));
+//                                Log.e( "onBindViewHolder1111: ",String.valueOf(status));
 //                            sanphamMNAdapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {

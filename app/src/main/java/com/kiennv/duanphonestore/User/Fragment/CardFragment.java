@@ -1,6 +1,8 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -64,10 +66,6 @@ public class CardFragment extends Fragment {
         rcv_giohang.setAdapter(giohangAdapter);
 
         getguture();
-        //chuyen thong tin login sang
-        Intent intent = getActivity().getIntent();
-        user = new User();
-        user = (User) intent.getSerializableExtra("login");
         //get thong tin dia chi
         tv_diachicard = v.findViewById(R.id.tv_diachicard);
 
@@ -100,9 +98,7 @@ public class CardFragment extends Fragment {
                StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_InsertSP, new Response.Listener<String>() {
                    @Override
                    public void onResponse(String response) {
-
                        try{
-
                            MainActivity.listcard.clear();
                            Intent intent = new Intent(v.getContext(), OrderSuccesActivity.class);
                            v.getContext().startActivity(intent);
@@ -155,7 +151,9 @@ public class CardFragment extends Fragment {
     }
     //lay thong tin dia chi khach hang
     private void diachiKH(){
-        tv_diachicard.setText(user.getAddress());
+        SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        String address = sp.getString("address", "");
+        tv_diachicard.setText(address);
         id=user.getId();
     }
     public static String getdate(){

@@ -143,6 +143,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textSize="20sp"
+                        android:text="Hỗ trợ"
                         android:paddingTop="10dp"
                         android:textColor="#00a5ff"/>
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +53,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kiennv.duanphonestore.User.Activity.EditUserActivity;
+import com.kiennv.duanphonestore.User.Activity.ForgotPassActivity;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 
@@ -74,8 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor loginPrefsEditor;
     private Boolean saveLogin;
     private String URL = "http://10.0.2.2/Duan/user/login.php";
-    private String URL_fogot_pass = "http://10.0.2.2/Duan/user/fogotpassword.php";
-    private ImageView face,gg,twiter;
+    private ImageView face,gg,twiter,imgeyelo;
     float v=0;
 
     @Override
@@ -91,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         checkbox_login = findViewById(R.id.checkbox_login);
         tvchuacotk = findViewById(R.id.tvchuacotk);
         phonestore = findViewById(R.id.phonestore);
+        imgeyelo = findViewById(R.id.imgeyelo);
 
         face = findViewById(R.id.face);
         gg = findViewById(R.id.gg);
@@ -110,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setTranslationY(300);
         tvchuacotk.setTranslationY(300);
         tvRegister.setTranslationY(300);
+        imgeyelo.setTranslationY(300);
 
         face.setAlpha(v);
         gg.setAlpha(v);
@@ -121,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setAlpha(v);
         tvchuacotk.setAlpha(v);
         tvRegister.setAlpha(v);
+        imgeyelo.setAlpha(v);
 
         face.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         gg.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(600).start();
@@ -128,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
         edtEmailLo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         edtPassLo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(600).start();
+        imgeyelo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(600).start();
         checkbox_login.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1000).start();
         forgotPass.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
         btnLogin.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
@@ -142,6 +147,9 @@ public class LoginActivity extends AppCompatActivity {
             edtEmailLo.setText(loginPreferences.getString("email", ""));
             checkbox_login.setChecked(true);
         }
+        //lay du lieu user vo
+        loginPreferences = getSharedPreferences("getuser", Context.MODE_PRIVATE);
+
         //login
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (jsonObject.getInt("success") == 1) {
                                     User account = new User();
+
                                     account.setId(jsonObject.getInt("id"));
                                     account.setFullName(jsonObject.getString("name"));
                                     account.setEmail(jsonObject.getString("email"));
@@ -188,10 +197,21 @@ public class LoginActivity extends AppCompatActivity {
                                     account.setAddress(jsonObject.getString("address"));
                                     account.setImages(jsonObject.getString("images"));
                                     message = jsonObject.getString("message");
+
+                                    SharedPreferences.Editor editor = loginPreferences.edit();
+                                    editor.putInt("id", account.getId());
+                                    editor.putString("name", account.getFullName());
+                                    editor.putString("email", account.getEmail());
+                                    editor.putString("password", account.getPassword());
+                                    editor.putString("phone", account.getPhone());
+                                    editor.putString("address", account.getAddress());
+                                    editor.putString("images", account.getImages());
+                                    editor.commit();
                                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("login", account);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     message = jsonObject.getString("message");
                                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
@@ -203,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(LoginActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Kiểm tra lại", Toast.LENGTH_SHORT).show();
                         }
                     }){
                         @Override
@@ -224,52 +244,9 @@ public class LoginActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                startActivity(intent);
 
-                final EditText resetMail = new EditText(v.getContext());
-                final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
-                passwordResetDialog.setTitle( "Đặt lại mật khẩu?");
-                passwordResetDialog.setIcon(R.drawable.forgot);
-                passwordResetDialog.setMessage( "Nhập Email để lấy lại mật khẩu.");
-                passwordResetDialog.setView(resetMail);
-
-                passwordResetDialog.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // extract the email and send reset link
-                        String mail = resetMail.getText().toString();
-                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_fogot_pass, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                if (response.equals("success")){
-                                    Toast.makeText(LoginActivity.this, "Kiểm tra Email để lấy lại mật khẩu.", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(LoginActivity.this, "Gửi mật khẩu thất bại.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(LoginActivity.this, "Kiểm tra", Toast.LENGTH_SHORT).show();
-                            }
-                        }){
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> data = new HashMap<>();
-                                data.put("email", mail);
-                                return data;
-                            }
-                        };
-                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                        requestQueue.add(stringRequest);
-                    }
-                });
-                passwordResetDialog.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // close the dialog
-                    }
-                });
-                passwordResetDialog.create().show();
             }
         });
 
@@ -316,23 +293,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //hien thi mat khau
-//    public void ShowHidePass(View view){
-//
-//        if(view.getId()==R.id.imgeyelo){
-//
-//            if(edtPassLo.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
-//                imgeyelo.setImageResource(R.drawable.hideeye);
-//
-//                //Show Password
-//                edtPassLo.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-//            }
-//            else{
-//                imgeyelo.setImageResource(R.drawable.showeye);
-//
-//                //Hide Password
-//                edtPassLo.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//
-//            }
-//        }
-//    }
+    public void ShowHidePass(View view){
+
+        if(view.getId()==R.id.imgeyelo){
+
+            if(edtPassLo.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                imgeyelo.setImageResource(R.drawable.hideeye);
+
+                //Show Password
+                edtPassLo.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                imgeyelo.setImageResource(R.drawable.showeye);
+
+                //Hide Password
+                edtPassLo.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
+    }
 }

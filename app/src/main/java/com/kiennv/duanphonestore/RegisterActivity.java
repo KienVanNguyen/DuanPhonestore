@@ -67,9 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvLogin;
     private CircleImageView crice_register;
+    private ImageView imgeyere,imgeyereconfirm;
     private Bitmap bitmap;
     private Uri filepath;
-    float v=0;
+    private float v=0;
     private String encodeImageString;
     private String URL = "http://10.0.2.2/Duan/user/register.php";
     @Override
@@ -84,6 +85,9 @@ public class RegisterActivity extends AppCompatActivity {
         edtAddressRe = findViewById(R.id.edtAddressRe);
         edtConfirmPassRe = findViewById(R.id.edtConfirmPassRe);
 
+        imgeyere = findViewById(R.id.imgeyere);
+        imgeyereconfirm = findViewById(R.id.imgeyereconfirm);
+
         btnRegister = findViewById(R.id.btnRegister);
         tvLogin = findViewById(R.id.tvLogin);
         crice_register = findViewById(R.id.crice_register);
@@ -94,6 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
         edtPassRe.setTranslationY(300);
         edtAddressRe.setTranslationY(300);
         edtConfirmPassRe.setTranslationY(300);
+        imgeyere.setTranslationY(300);
+        imgeyereconfirm.setTranslationY(300);
 
 
         edtNameRe.setAlpha(v);
@@ -102,6 +108,8 @@ public class RegisterActivity extends AppCompatActivity {
         edtAddressRe.setAlpha(v);
         edtPassRe.setAlpha(v);
         edtConfirmPassRe.setAlpha(v);
+        imgeyere.setAlpha(v);
+        imgeyereconfirm.setAlpha(v);
 
 
         edtNameRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
@@ -109,7 +117,9 @@ public class RegisterActivity extends AppCompatActivity {
         edtPhoneRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(800).start();
         edtAddressRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1000).start();
         edtPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
+        imgeyere.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1200).start();
         edtConfirmPassRe.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
+        imgeyereconfirm.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(1400).start();
 
         //hinh anh
         crice_register.setOnClickListener( new View.OnClickListener() {
@@ -214,7 +224,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(RegisterActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Vui lòng chọn đủ để đăng ký", Toast.LENGTH_SHORT).show();
                         }
                     }){
                         @Override
@@ -258,6 +268,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void encodeBitmapImage(Bitmap bitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
         byte[] bytesofimage=byteArrayOutputStream.toByteArray();
         encodeImageString=android.util.Base64.encodeToString(bytesofimage, Base64.DEFAULT);
@@ -279,5 +290,45 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    //hien thi mat khau
+    public void ShowHidePassRe(View view){
+
+        if(view.getId()==R.id.imgeyere){
+
+            if(edtPassRe.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                imgeyere.setImageResource(R.drawable.hideeye);
+
+                //Show Password
+                edtPassRe.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                imgeyere.setImageResource(R.drawable.showeye);
+
+                //Hide Password
+                edtPassRe.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
+    }
+    //hien thi mat khau
+    public void ShowHidePassReConfirm(View view){
+
+        if(view.getId()==R.id.imgeyereconfirm){
+
+            if(edtConfirmPassRe.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                imgeyereconfirm.setImageResource(R.drawable.hideeye);
+
+                //Show Password
+                edtConfirmPassRe.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else{
+                imgeyereconfirm.setImageResource(R.drawable.showeye);
+
+                //Hide Password
+                edtConfirmPassRe.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+            }
+        }
     }
 }

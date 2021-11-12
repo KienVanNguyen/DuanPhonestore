@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,10 +41,10 @@ import java.util.Map;
 
 public class ChangePasssUserActivity extends AppCompatActivity {
 
-    private static ImageView imgchanglepass;
+    private static int id=0;
     private static TextInputEditText edtPasswordnewchange,edtPasswordnewnhaplai;
     private static Button btnConfirmchangle;
-    private static String URL_updatePass = " http://10.0.2.2/Duan/user/updatePassword.php";
+    private static String URL_updatePass = "http://10.0.2.2/Duan/user/updatePassword.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +54,12 @@ public class ChangePasssUserActivity extends AppCompatActivity {
         edtPasswordnewchange = findViewById(R.id.edtPasswordnewchange);
         edtPasswordnewnhaplai = findViewById(R.id.edtPasswordnewnhaplai);
 
-        //tro lai fragment
-//        Toolbar toolbar = findViewById(R.id.toolbarDoimatkhau);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //lay id nguoi dung ve de update
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        id = sp.getInt("id", 0);
+//        Log.e( "onBindViewHolder: ",sp.getString("email",""));
+//        Log.e( "onBindViewHolder: ", String.valueOf(sp.getInt("id",0)));
+//        Log.e( "onBindViewHolder: ",sp.getString("name",""));
 
         //thay doi mat khau
         btnConfirmchangle = findViewById(R.id.btnConfirmchangle);
@@ -99,6 +103,7 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                         protected Map<String, String> getParams() throws AuthFailureError {
 
                             Map<String, String> params = new HashMap<>();
+                             params.put("id", String.valueOf(id));
                              params.put("password", passMoi);
                             return params;
                         }

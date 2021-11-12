@@ -56,6 +56,19 @@
             android:textAllCaps="false"
             android:textColor="#ffffff"
             android:textSize="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_chatadmin"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Liên hệ: adminphonestore@gmail.com"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -80,7 +93,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="55dp"
-            app:cardBackgroundColor="#DDDDDD"
+            app:cardBackgroundColor="#fafafa"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp">
 

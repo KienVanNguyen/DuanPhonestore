@@ -80,12 +80,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:rating="4.5"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
+                android:progressTint="#00a5ff"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
                 />
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_marginTop="-15dp"
+                android:layout_marginTop="-20dp"
                 android:layout_gravity="right"
                 android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
@@ -129,7 +130,7 @@
                     android:id="@+id/txtChitietProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="iPhone 13 Pro Max - siêu phẩm được mong chờ nhất ở nửa cuối năm 2021 đến từ Apple. Máy có thiết kế không mấy đột phá khi so với người tiền nhiệm, bên trong đây vẫn là một sản phẩm có màn hình siêu đẹp, tần số quét được nâng cấp lên 120 Hz mượt mà, cảm biến camera có kích thước lớn hơn, cùng hiệu năng mạnh mẽ với sức mạnh đến từ Apple A15 Bionic, sẵn sàng cùng bạn chinh phục mọi thử thách."
+                    android:text="iPhone 13 Pro Max - siêu phẩm được mong chờ nhất ở nửa cuối năm 2021 đến từ Apple. Máy có thiết kế không mấy đột phá khi so với người tiền nhiệm, bên trong đây vẫn là một sản phẩm có màn hình siêu đẹp, tần số quét được nâng cấp lên 120 Hz mượt mà, cảm biến camera có kích thước lớn hơn"
                     android:textColor="#000000"
                     android:textSize="20dp" />
 <!--            </ScrollView>-->
@@ -148,26 +149,29 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:weightSum="10"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="100dp"
-                android:layout_height="80dp"
+                android:id="@+id/txtComment"
+                android:layout_width="60dp"
+                android:layout_height="45dp"
                 android:layout_weight="9"
-                android:layout_marginTop="5dp"
-
+                android:paddingLeft="20dp"
                 android:background="@drawable/bg_cmt"
                 android:hint="Phản hồi"
              />
                 <ImageView
-                    android:layout_weight="2"
+                    android:id="@+id/imgSend"
+                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_width="30dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/send"/>
+                    android:src="@drawable/sendcmt"/>
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RCV_Comment"
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -231,7 +235,7 @@
                 android:textAllCaps="false"
                 android:textSize="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"/>
+                android:layout_height="48dp"/>
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
