@@ -8,19 +8,19 @@
 
     <ImageView
         android:id="@+id/imgmanhinhchao"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/store"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PhoneStore"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="420dp"
-        android:textSize="24dp"
-        android:textColor="#00a5ff"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="PhoneStore"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="420dp"-->
+<!--        android:textSize="24dp"-->
+<!--        android:textColor="#00a5ff"/>-->
 
 </RelativeLayout>

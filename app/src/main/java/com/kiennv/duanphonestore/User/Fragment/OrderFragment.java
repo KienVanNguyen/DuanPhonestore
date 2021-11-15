@@ -1,6 +1,8 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -63,9 +65,9 @@ public class OrderFragment extends Fragment {
             }
         });
         //chuyen thong tin login sang
-        Intent intent = getActivity().getIntent();
-        user = new User();
-        user = (User) intent.getSerializableExtra("login");
+//        Intent intent = getActivity().getIntent();
+//        user = new User();
+//        user = (User) intent.getSerializableExtra("login");
         try {
             //lay du lieu user
             diachiKH();
@@ -132,6 +134,7 @@ public class OrderFragment extends Fragment {
         requestQueue.add(request);
     }
     private void diachiKH(){
-        id=user.getId();
+        SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        id = sp.getInt("id", 0);
     }
     }

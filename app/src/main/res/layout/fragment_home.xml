@@ -7,40 +7,35 @@
     android:background="#fafafa"
     android:orientation="vertical"
     tools:context=".User.Fragment.HomeFragment">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="#00a5ff"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00a5ff">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_centerVertical="true"
-            android:layout_height="30dp"
-            android:src="@drawable/store"
-            />
         <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/shimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:maxLines="1"
-            android:layout_marginLeft="45dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="0dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:maxLines="1"
             android:text="PhoneStore"
             android:textColor="@color/black"
+            android:textSize="25dp"
             android:textStyle="bold"
-            android:id="@+id/shimmer"
-            android:fontFamily="sans-serif-condensed-medium"
-            app:reflectionColor="#00a5ff"/>
+            app:reflectionColor="#00a5ff" />
+
         <ImageView
             android:id="@+id/img_cardhome"
             android:layout_width="20dp"
-            android:layout_centerVertical="true"
             android:layout_height="20dp"
-            android:src="@drawable/shoppingcart"
-            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
             android:layout_gravity="right"
-            />
+            android:layout_marginRight="10dp"
+            android:src="@drawable/shoppingcart" />
     </androidx.appcompat.widget.Toolbar>
     <EditText
         android:id="@+id/edtTimKiem"

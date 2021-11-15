@@ -109,7 +109,7 @@ public class ChitietspActivity extends AppCompatActivity {
                 StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_Comment, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(v.getContext(), "Đánh giá thành công",Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), "Cảm ơn bạn đã phản hồi.",Toast.LENGTH_LONG).show();
                         // int id, String nameUS, String imageUS, String status, int idUS, int idSP
 
                     }

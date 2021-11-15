@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="textoder">
+        <item>Danh sách các đơn hàng đã đặt</item>
+        <item>Cảm ơn bạn đã đặt hàng</item>
+    </string-array>
+</resources>

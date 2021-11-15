@@ -153,8 +153,9 @@ public class CardFragment extends Fragment {
     private void diachiKH(){
         SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
         String address = sp.getString("address", "");
+        id = sp.getInt("id", 0);
         tv_diachicard.setText(address);
-        id=user.getId();
+
     }
     public static String getdate(){
          return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());

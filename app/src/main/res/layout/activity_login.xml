@@ -235,14 +235,14 @@
 
             </LinearLayout>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/round_background"
-                android:padding="15dp"
+                android:padding="8dp"
                 android:src="@drawable/store" />
 
             <TextView

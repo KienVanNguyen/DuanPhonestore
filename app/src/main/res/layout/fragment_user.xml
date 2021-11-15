@@ -46,6 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:textStyle="italic|bold"
                         android:text="Chào mừng,"
                         android:textColor="#fff"
                         android:textSize="18sp" />
@@ -63,7 +64,7 @@
                             android:layout_marginLeft="5dp"
                             android:text="Thành viên"
                             android:textColor="#00a5ff"
-                            android:textStyle="bold"
+                            android:textStyle="italic|bold"
 
                             />
                     </androidx.cardview.widget.CardView>
@@ -73,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Kien Van Nguyen"
+                        android:text="nhom 1"
                         android:textColor="#fff"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -120,13 +121,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:text="Giỏ hàng"
+                        android:textStyle="italic|bold"
+                        android:textSize="18dp"
                         android:paddingTop="10dp"
-                        android:textColor="#00a5ff"/>
+                        android:textColor="#000000"/>
 
                 </LinearLayout>
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#00a5ff"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="25dp"
+                    />
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="vertical"
@@ -141,13 +149,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textStyle="italic|bold"
+                        android:textSize="18dp"
                         android:text="Hỗ trợ"
                         android:paddingTop="10dp"
-                        android:textColor="#00a5ff"/>
+                        android:textColor="#000000"/>
 
                 </LinearLayout>
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="wrap_content"
+                    android:background="#00a5ff"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="25dp"
+                    />
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="vertical"
@@ -162,11 +177,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:text="Đơn hàng"
+                        android:textStyle="italic|bold"
+                        android:textSize="18dp"
                         android:paddingTop="10dp"
-                        android:textColor="#00a5ff"/>
+                        android:textColor="#000000"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -214,12 +229,7 @@
 
         </LinearLayout>
         </androidx.cardview.widget.CardView>
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:background="#BBBBBB"-->
-<!--            />-->
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             app:cardCornerRadius="8dp"
@@ -252,12 +262,6 @@
 
         </LinearLayout>
         </androidx.cardview.widget.CardView>
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:background="#BBBBBB"-->
-<!--            />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -279,12 +283,7 @@
                 android:layout_marginRight="10dp"
                 android:text="Thiết lập tài khoản" />
             </androidx.cardview.widget.CardView>
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_marginTop="7dp"-->
-<!--                android:background="#BBBBBB"-->
-<!--                />-->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 app:cardCornerRadius="8dp"

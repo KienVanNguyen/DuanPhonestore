@@ -54,12 +54,6 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xem_all_spmoinhat);
 
-        //tro lai fragment
-//        Toolbar toolbar = findViewById(R.id.toolbarSeeall);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         rcv_showallSPMoinhat = findViewById(R.id.rcv_showallSPMoinhat);
         //show sp
         sanPhamList = new ArrayList<>();

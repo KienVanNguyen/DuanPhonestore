@@ -75,7 +75,7 @@ public class UserFragment extends Fragment {
     private static Button logout;
     private static TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
     private static CircleImageView crice_imageuser;
-    private static TextInputEditText edtPasswordchange, edtEmailedituser222;
+    private static TextInputEditText edtPasswordchange;
     private List<User> userList= new ArrayList<>();
     private static String URL_getPass = " http://10.0.2.2/Duan/user/getpassword.php";
     private static int id=0;
@@ -145,7 +145,7 @@ public class UserFragment extends Fragment {
                 View view = inflater.inflate(R.layout.dialog_change_pass, null);
                 builder.setView(view)
                         .setTitle("Thiết lập mật khẩu")
-                        .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -265,7 +265,7 @@ public class UserFragment extends Fragment {
         String name = sp.getString("name", "");
         String phone = sp.getString("phone", "");
         String address = sp.getString("address", "");
-        txtNameuser.setText(name);
+        txtNameuser.setText(name +" \uD83C\uDDFB\uD83C\uDDF3");
         txtPhoneuser.setText(phone);
         txtAddressuser.setText(address);
         Picasso.get().load(image).into(crice_imageuser);
