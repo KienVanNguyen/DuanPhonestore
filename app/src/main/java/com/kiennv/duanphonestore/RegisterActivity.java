@@ -169,9 +169,8 @@ public class RegisterActivity extends AppCompatActivity {
                     edtPassRe.setError("Chưa nhập mật khẩu");
                     return;
                 }
-                if (password.length() > 6) {
-                    edtPassRe.setError("Mật khẩu phải > 6 ký tự");
-                    edtConfirmPassRe.setError("Mật khẩu phải > 6 ký tự");
+                if (password.length() >= 6) {
+                    edtPassRe.setError("Mật khẩu phải > = 6 ký tự");
                     return;
                 }
                 if (TextUtils.isEmpty(fullName)) {

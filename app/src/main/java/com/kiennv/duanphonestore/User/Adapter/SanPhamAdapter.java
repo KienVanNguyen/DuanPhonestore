@@ -49,19 +49,15 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         Picasso.get().load(sanPhamList.get(position).getImage_SP()).into(holder.imgSanpham);
 
 
-        holder.btnlikesp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (true){
-                    holder.btnlikesp.setImageResource(R.drawable.heart);
-                    holder.btnlikesp.setVisibility(View.INVISIBLE);
-                    holder.btnlikesp.setVisibility(View.VISIBLE);
-                }else{
-                    holder.btnlikesp.setVisibility(View.INVISIBLE);
-                    holder.btnlikesp.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        holder.btnlikesp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (true){
+//                    holder.btnlikesp.setImageResource(R.drawable.heart);
+//                }else{
+//                }
+//            }
+//        });
 
     }
 

@@ -37,6 +37,7 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/shoppingcart" />
     </androidx.appcompat.widget.Toolbar>
+
     <EditText
         android:id="@+id/edtTimKiem"
         android:layout_width="match_parent"
@@ -45,11 +46,10 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="30dp"
-        android:height="55dp"
         android:background="@drawable/search_bar_background"
         android:drawableEnd="@drawable/search_btn"
         android:elevation="10dp"
-        android:hint="Iphone 13, Xiaomi..."
+        android:hint="Iphone, Xiaomi..."
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:textColor="@color/white"
@@ -101,12 +101,14 @@
                             android:textColor="#000000"
                             android:textSize="20dp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/txtSeeallSPmoinhat"
                             style="@style/viewParent"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:text="Xem thêm"
+                            android:textStyle="italic"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="16dp" />
                     </RelativeLayout>

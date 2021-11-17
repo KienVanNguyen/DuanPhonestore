@@ -321,12 +321,12 @@
         </LinearLayout>
         <Button
             android:id="@+id/logout"
-            android:layout_width="190dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/login_button_bk"
+            android:background="@drawable/logout"
             android:text="Đăng xuất"
             android:textAllCaps="false"
             android:textColor="#ffffff"

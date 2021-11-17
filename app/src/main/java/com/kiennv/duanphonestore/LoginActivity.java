@@ -161,10 +161,10 @@ public class LoginActivity extends AppCompatActivity {
                     edtEmailLo.setError("Chưa nhập Email");
                     return;
                 }
-                if (password.length() < 6) {
-                    edtPassLo.setError("Mật khẩu phải < 6 ký tự");
-                    return;
-                }
+//                if (password.length() >= 6) {
+//                    edtPassLo.setError("Mật khẩu phải > = 6 ký tự");
+//                    return;
+//                }
                 if(TextUtils.isEmpty(password)){
                     edtPassLo.setError("Chưa nhập mật khẩu");
                     return;

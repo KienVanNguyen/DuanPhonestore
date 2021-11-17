@@ -81,6 +81,40 @@
                 android:progressTint="#00a5ff"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
                 />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:gravity="bottom"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <androidx.appcompat.widget.AppCompatCheckedTextView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginLeft="20dp"-->
+<!--                    android:background="@drawable/chitietspsize"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="64GB"-->
+<!--                    android:textColor="#000000" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatCheckedTextView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:background="@drawable/chitietspsize"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="128GB"-->
+<!--                    android:textColor="#000000" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatCheckedTextView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:background="@drawable/chitietspsize"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="256GB"-->
+<!--                    android:textColor="#000000" />-->
+<!--            </LinearLayout>-->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="-20dp"
@@ -198,42 +232,6 @@
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="10dp"-->
-            <!--                android:gravity="bottom"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="50dp"-->
-            <!--                    android:layout_height="30dp"-->
-            <!--                    android:layout_marginLeft="20dp"-->
-            <!--                    android:background="@drawable/chitietspsize"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="64GB"-->
-            <!--                    android:textColor="#000000" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="50dp"-->
-            <!--                    android:layout_height="30dp"-->
-            <!--                    android:layout_marginLeft="10dp"-->
-            <!--                    android:background="@drawable/chitietspsize"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="128GB"-->
-            <!--                    android:textColor="#000000" />-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="50dp"-->
-            <!--                    android:layout_height="30dp"-->
-            <!--                    android:layout_marginLeft="10dp"-->
-            <!--                    android:background="@drawable/chitietspsize"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="256GB"-->
-            <!--                    android:textColor="#000000" />-->
-            <!--            </LinearLayout>-->
-
             <Button
                 android:id="@+id/btnaddcardProduct"
                 android:textColor="#FFF"

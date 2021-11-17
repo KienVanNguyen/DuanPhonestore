@@ -133,7 +133,7 @@
                 <Button
                     android:id="@+id/btnConfirmedit"
                     android:layout_width="240dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_margin="40dp"
                     android:background="@drawable/login_button_bk"

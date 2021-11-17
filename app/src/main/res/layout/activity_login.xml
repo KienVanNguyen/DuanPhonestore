@@ -157,7 +157,7 @@
                         <Button
                             android:id="@+id/btnLogin"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="48dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/loginViewsMargin"
                             android:background="@drawable/login_button_bk"
@@ -255,8 +255,6 @@
                 android:text="PhoneStore"
                 android:textSize="32dp"
                 android:textStyle="bold" />
-
-
         </RelativeLayout>
     </ScrollView>
 

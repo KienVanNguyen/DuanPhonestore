@@ -57,9 +57,6 @@ public class ChangePasssUserActivity extends AppCompatActivity {
         //lay id nguoi dung ve de update
         SharedPreferences sp = getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
         id = sp.getInt("id", 0);
-//        Log.e( "onBindViewHolder: ",sp.getString("email",""));
-//        Log.e( "onBindViewHolder: ", String.valueOf(sp.getInt("id",0)));
-//        Log.e( "onBindViewHolder: ",sp.getString("name",""));
 
         //thay doi mat khau
         btnConfirmchangle = findViewById(R.id.btnConfirmchangle);
@@ -69,7 +66,6 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                 String passMoi = edtPasswordnewchange.getText().toString();
                 String passMoinhaplai = edtPasswordnewnhaplai.getText().toString();
 
-//
                 if (TextUtils.isEmpty(passMoi) && TextUtils.isEmpty(passMoinhaplai)) {
                     edtPasswordnewchange.setError("Chưa nhập mật khẩu");
                     edtPasswordnewnhaplai.setError("Chưa nhập mật khẩu");
@@ -78,9 +74,9 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                 if (!passMoi.equals(passMoinhaplai)) {
                     edtPasswordnewchange.setError("Mật khẩu không giống nhau");
                 }
-                if (passMoi.length() < 6 || passMoinhaplai.length() < 6) {
-                    edtPasswordnewchange.setError("Mật khẩu phải < 6 ký tự");
-                    edtPasswordnewnhaplai.setError("Mật khẩu phải < 6 ký tự");
+                if (passMoi.length() >= 6 || passMoinhaplai.length() >= 6) {
+                    edtPasswordnewchange.setError("Mật khẩu phải > = 6 ký tự");
+                    edtPasswordnewnhaplai.setError("Mật khẩu phải > = 6 ký tự");
                     return;
                 } else {
                     StringRequest request = new StringRequest(Request.Method.POST, URL_updatePass,
