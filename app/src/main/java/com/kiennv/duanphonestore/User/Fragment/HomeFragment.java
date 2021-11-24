@@ -1,6 +1,8 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,17 +21,24 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kiennv.duanphonestore.R;
 import com.kiennv.duanphonestore.User.Activity.XemAllSPMoinhatActivity;
+import com.kiennv.duanphonestore.User.Adapter.FavouriteAdapter;
 import com.kiennv.duanphonestore.User.Adapter.SanPhamAdapter;
+import com.kiennv.duanphonestore.User.Model.Favourite;
+import com.kiennv.duanphonestore.User.Model.OrderDetail;
 import com.kiennv.duanphonestore.User.Model.SanPham;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -39,22 +48,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class HomeFragment extends Fragment {
 
     private static Shimmer shimmer;
-    private static ShimmerTextView shimmerTextView;
+    private static ShimmerTextView shimmerTextPhone;
     private static ViewFlipper viewFlipper;
     private static ImageView img_cardhome;
     private static RecyclerView rcv_spmoinhat,rcv_spbanchay;
     private static EditText edtTimKiem;
     private static SanPhamAdapter sanPhamAdapter;
+    private static FavouriteAdapter favouriteAdapter;
     private static List<SanPham> sanPhamList;
+    private List<Favourite> favouriteList;
     private static RequestQueue requestQueue;
+    private int idUS=0;
     private static TextView txtSeeallSPmoinhat;
     private static String URL_ShowSP= "http://10.0.2.2/Duan/question/readDSMN.php";
+    private static String URL_ShowSPFavourite= "http://10.0.2.2/Duan/question/readFavourite.php";
 
     //an thanh navigation bar khi su dung ban phim
     @Override
@@ -63,16 +78,16 @@ public class HomeFragment extends Fragment {
         super.onResume();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
-
         //text hieu ung
-        shimmerTextView= v.findViewById(R.id.shimmer);
+        shimmerTextPhone= v.findViewById(R.id.shimmerTextPhone);
         shimmer = new Shimmer();
-        shimmer.start(shimmerTextView);
+        shimmer.start(shimmerTextPhone);
 
         //anh xa
         rcv_spmoinhat= v.findViewById(R.id.rcv_spmoinhat);
@@ -91,8 +106,10 @@ public class HomeFragment extends Fragment {
 
         //show sp
         sanPhamList = new ArrayList<>();
+        favouriteList = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(getContext());
         showSanphammoinhat();
+        //show sp readFavourite
         showSanphamnoibat();
 
         //chuyen sang gio hang
@@ -143,6 +160,8 @@ public class HomeFragment extends Fragment {
                 //toLowerCase cho phép chuyển đổi mọi ký tự viết Hoa của chuỗi thành ký tự viết thường
                 if (item.getName().toLowerCase().contains(text.toLowerCase())){
                     sanPhams.add(item);
+                }else{
+                    Toast.makeText(getContext(),"Không có dữ liệu",Toast.LENGTH_SHORT).show();
                 }
             }
             sanPhamAdapter.searchspList(sanPhams);
@@ -151,42 +170,70 @@ public class HomeFragment extends Fragment {
         }
 
     }
-
-    //show sp
+    //show san pham yeu thich
     private void showSanphamnoibat() {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_ShowSP, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("data");
-                            for (int i=0;i<jsonArray.length();i++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                SanPham sanPham = new SanPham();
-                                sanPham.setId(jsonObject.getInt("id"));
-                                sanPham.setName(jsonObject.getString("name"));
-                                sanPham.setPrice(jsonObject.getInt("price"));
-                                sanPham.setImage_SP(jsonObject.getString("image_SP"));
-                                sanPham.setMotasanpham(jsonObject.getString("mota"));
-                                sanPhamList.add(sanPham);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+        idUS=sp.getInt("id",0);
+//        Log.e( "info: ",String.valueOf(idUS=sp.getInt("id",0)));
 
-                        rcv_spbanchay.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        sanPhamAdapter = new SanPhamAdapter(getContext(), sanPhamList);
-                        rcv_spbanchay.setAdapter(sanPhamAdapter);
+        StringRequest request = new StringRequest(Request.Method.POST,URL_ShowSPFavourite, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                int id = 0;
+                int idUS = 0;
+                String name = "";
+                int price = 0;
+                String images = "";
+                String mota = "";
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        //get du lieu cho bien
+                        id = jsonObject.getInt("id");
+                        idUS = jsonObject.getInt("idUS");
+                        price = jsonObject.getInt("price");
+                        name = jsonObject.getString("name");
+                        images = jsonObject.getString("image_SP");
+                        mota = jsonObject.getString("mota");
+
+                        favouriteList.add(new Favourite(id, idUS, name, price, images,mota));
+                        //  commentList.clear();
+//                        Log.e( "OrderDetail: ",String.valueOf(name) );
+
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                rcv_spbanchay.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                favouriteAdapter = new FavouriteAdapter(getContext(), favouriteList);
+                rcv_spbanchay.setAdapter(favouriteAdapter);
+
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("tag", "onErrorResponse: " + error.getMessage());
+
             }
-        });
+        }) {
+            //day len server
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //HashMap 1.tao key gui len server 2.cai gia tri gui len cho no
+                HashMap<String, String> param = new HashMap<String, String>();
+                //dua vao idsanpham tren php
+                param.put("idUS", String.valueOf(idUS));
+//                Log.e( "onBindViewHolder: ",String.valueOf(idUS));
+                //return param de gui request
+                return param;
+            }
+        };
+        //thuc thi requestQueue
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(request);
     }
-    //show sp
+    
+    //show tat ca sp
     private void showSanphammoinhat() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_ShowSP, null,
                 new Response.Listener<JSONObject>() {
@@ -216,7 +263,7 @@ public class HomeFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Toast.makeText(getContext(), "Lỗi", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

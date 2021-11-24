@@ -13,12 +13,14 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:src="@drawable/back"/>
+
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:src="@drawable/forgot"/>
+        android:src="@drawable/forgot" />
+
     <TextView
         android:text="Quên mật khẩu"
         android:layout_gravity="center"
@@ -29,12 +31,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
-        android:text="Nhập email và số điện thoại để lấy lại mật khẩu."
+        android:id="@+id/txtTimeForgot"
+        android:text="thời gian còn 120 s"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:textSize="18dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/red_btn_bg_color"
         android:layout_width="300dp"
         android:layout_height="wrap_content"/>
 
@@ -44,7 +47,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#F7F7F7"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp">
@@ -74,24 +77,54 @@
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         app:cardBackgroundColor="#F7F7F7"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtPhoneForgot"
+            android:id="@+id/edtCodeForgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:background="@android:color/transparent"
-            android:drawableStart="@drawable/ic_phone"
-            android:drawableLeft="@drawable/ic_phone"
+            android:drawableStart="@drawable/ic_code"
+            android:drawableLeft="@drawable/ic_code"
             android:drawablePadding="12dp"
-            android:hint="Số điện thoại"
-            android:inputType="phone"
+            android:hint="Code"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionNext"
+            android:minWidth="320dp"
+            android:minHeight="50dp"
+            android:singleLine="true" />
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="15dp"
+        app:cardBackgroundColor="#F7F7F7"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPassForgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_lock"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="12dp"
+            android:hint="Mật khẩu"
+            android:inputType="textEmailAddress"
             android:imeOptions="actionNext"
             android:minWidth="320dp"
             android:minHeight="50dp"

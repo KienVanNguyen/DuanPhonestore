@@ -15,7 +15,7 @@
         android:background="#00a5ff">
 
         <com.romainpiel.shimmer.ShimmerTextView
-            android:id="@+id/shimmer"
+            android:id="@+id/shimmerTextPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

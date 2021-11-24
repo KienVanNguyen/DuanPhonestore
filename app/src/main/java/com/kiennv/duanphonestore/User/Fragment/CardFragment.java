@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,17 +25,27 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.kiennv.duanphonestore.R;
 import com.kiennv.duanphonestore.User.Activity.OrderSuccesActivity;
 import com.kiennv.duanphonestore.User.Adapter.GioHangAdater;
 import com.kiennv.duanphonestore.User.MainActivity;
+import com.kiennv.duanphonestore.User.Model.CardSTT;
+import com.kiennv.duanphonestore.User.Model.Comment;
 import com.kiennv.duanphonestore.User.Model.User;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -45,10 +56,14 @@ public class CardFragment extends Fragment {
     private static View btnThanhToan;
     private static User user;
     private static int id=0;
+    private static String diachi="";
     private static String future;
-    private static String URL_InsertSP= "http://10.0.2.2/Duan/question/orderdetails.php";
+    private static String URL_InsertSP= "http://10.0.2.2/Duan/question/orderStatus%20.php";
+    private static String URL_InsertOrderDetail= "http://10.0.2.2/Duan/question/orderDetail.php";
     private static RadioButton radioButton;
-
+    private static List<CardSTT> cardFragmentList;
+    private static int idmahoadon=6;
+    private static  CardSTT cardSTT;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +74,10 @@ public class CardFragment extends Fragment {
         btnThanhToan=v.findViewById(R.id.btnThanhtoanCard);
         rcv_giohang = v.findViewById(R.id.rcv_giohang);
         radioButton=v.findViewById(R.id.checkboxTTGH);
+
+
+        cardFragmentList=new ArrayList<>();
+
         //recycleview
         rcv_giohang.setHasFixedSize(true);
         giohangAdapter = new GioHangAdater(getContext(), MainActivity.listcard);
@@ -94,44 +113,87 @@ public class CardFragment extends Fragment {
         btnThanhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(MainActivity.listcard.size()>0){
 //                Log.e( "onClick: ",String.valueOf(future));
-               StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_InsertSP, new Response.Listener<String>() {
-                   @Override
-                   public void onResponse(String response) {
-                       try{
-                           MainActivity.listcard.clear();
-                           Intent intent = new Intent(v.getContext(), OrderSuccesActivity.class);
-                           v.getContext().startActivity(intent);
-//                       new SweetAlertDialog(v.getContext(), SweetAlertDialog.SUCCESS_TYPE)
-//                               .setTitleText("Thanh toan giỏ hàng thành công")
-//
-//                               .show();
-                       }catch (Exception e){
-                           e.printStackTrace();
-                       }
+                StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_InsertSP, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response ) {
+                        try{
+                            MainActivity.listcard.clear();
+                            Intent intent = new Intent(v.getContext(), OrderSuccesActivity.class);
+                            v.getContext().startActivity(intent);
 
+//                            Log.e( "onResponse: ",String.valueOf(cardFragmentList.get(cardSTT.getId())));
 
-                   }
-               }, new Response.ErrorListener() {
-                   @Override
-                   public void onErrorResponse(VolleyError error) {
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                   }
-               }){
-
-                   @Override
-                   protected Map<String, String> getParams() throws AuthFailureError {
-                       Map<String,String> map=new HashMap<>();
-                       map.put("gia",String.valueOf(finalTongtien));
-                       map.put("idnguoidung",String.valueOf(id));
-                       map.put("date",getdate());
-                       map.put("receivedDate",future);
-                       map.put("status",String.valueOf(radioButton.getText()));
-                       return map;
-                   }
-               };
+                    }
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map=new HashMap<>();
+                        String date=getdate();
+                        String status=String.valueOf(radioButton.getText());
+                        map.put("gia",String.valueOf(finalTongtien));
+                        map.put("idnguoidung",String.valueOf(id));
+                        map.put("date",date);
+                        map.put("receivedDate",future);
+                        map.put("diachiUS",diachi);
+                        map.put("status",status);
+                        Log.e( "getParams: ",date );
+                        //    cardFragmentList.add(id,finalTongtien,date,status,future);
+                        return map;
+                    }
+                };
                 RequestQueue requestQueue = Volley.newRequestQueue(v.getContext());
                 requestQueue.add(stringRequest);
+
+                StringRequest stringRequest1 =new StringRequest(Request.Method.POST, URL_InsertOrderDetail, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(v.getContext(), response.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Nullable
+                    @org.jetbrains.annotations.Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        JSONArray jsonArray=new JSONArray();
+                        for (int i=0;i<MainActivity.listcard.size();i++){
+                            JSONObject jsonObject =new JSONObject();
+                            try {
+                                jsonObject.put("Price",MainActivity.listcard.get(i).getPriceSP());
+                                jsonObject.put("name",MainActivity.listcard.get(i).getNameSPGH());
+                                jsonObject.put("images",MainActivity.listcard.get(i).getImageSPGH());
+                                jsonObject.put("quantity",MainActivity.listcard.get(i).getQuantitySPGH());
+                                jsonObject.put("mahoadon",idmahoadon);
+//                                Log.e( "getParams: ", String.valueOf(jsonObject.put("quantity", MainActivity.listcard.get(i).getQuantitySPGH())));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            jsonArray.put(jsonObject);
+                        }
+                        HashMap<String,String> hastmap1= new HashMap<>();
+                        hastmap1.put("json",jsonArray.toString());
+                        return hastmap1;
+                    }
+                };
+                RequestQueue requestQue = Volley.newRequestQueue(v.getContext());
+                requestQue.add(stringRequest1);
+                }else {
+                    Toast.makeText(v.getContext(), "Vui lòng thêm sản phẩm để thanh toán", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -152,13 +214,13 @@ public class CardFragment extends Fragment {
     //lay thong tin dia chi khach hang
     private void diachiKH(){
         SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
-        String address = sp.getString("address", "");
-        id = sp.getInt("id", 0);
-        tv_diachicard.setText(address);
+        diachi = sp.getString("address", "");
+        tv_diachicard.setText(diachi);
+        id=sp.getInt("id",0);
 
     }
     public static String getdate(){
-         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
     public static void getguture(){
         Calendar c=Calendar.getInstance();
@@ -168,8 +230,9 @@ public class CardFragment extends Fragment {
         SimpleDateFormat sdf1=new SimpleDateFormat("YYYY-MM-dd");
 
         future=sdf1.format(c.getTime());
-       SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd");
-       String date=sdf.format(new Date());
+        SimpleDateFormat sdf=new SimpleDateFormat("YYYY-MM-dd");
+        String date=sdf.format(new Date());
 //        Log.e( "getguture: ",String.valueOf(future) );
     }
+
 }

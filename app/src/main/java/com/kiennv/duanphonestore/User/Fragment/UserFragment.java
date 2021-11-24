@@ -1,20 +1,16 @@
 package com.kiennv.duanphonestore.User.Fragment;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,36 +27,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.StorageReference;
-import com.hsalf.smilerating.SmileRating;
 import com.kiennv.duanphonestore.LoginActivity;
 import com.kiennv.duanphonestore.R;
 import com.kiennv.duanphonestore.User.Activity.ChangePasssUserActivity;
 import com.kiennv.duanphonestore.User.Activity.ChatadminActivity;
 import com.kiennv.duanphonestore.User.Activity.EditUserActivity;
-import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.User;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,12 +46,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserFragment extends Fragment {
-    private static ImageView image_donhangvanchuyen,img_carduser,img_chatadminuser;
+    private static ImageView image_donhangvanchuyen,img_carduser;
     private static Button logout;
     private static TextView txtNameuser,txtPhoneuser,txtAddressuser,txtChinhsuataikhoan,txtThaydoimatkhau,txtFeedback;
     private static CircleImageView crice_imageuser;
     private static TextInputEditText edtPasswordchange;
     private List<User> userList= new ArrayList<>();
+    private static ViewFlipper viewFlipperUser;
     private static String URL_getPass = " http://10.0.2.2/Duan/user/getpassword.php";
     private static int id=0;
     @Override
@@ -107,15 +83,14 @@ public class UserFragment extends Fragment {
                 ft.commit();
             }
         });
-        //chuyen sang chat admin
-        img_chatadminuser = v.findViewById(R.id.img_chatadminuser);
-        img_chatadminuser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ChatadminActivity.class);
-                startActivity(intent);
-            }
-        });
+
+        //slide view
+        viewFlipperUser = v.findViewById(R.id.viewFlipperUser);
+        int images[] = {R.drawable.store,R.drawable.userinterface,R.drawable.useraddcart,R.drawable.userpayment,R.drawable.userbooking,R.drawable.usership,R.drawable.thankyou};
+        for (int i=0; i<images.length; i++){
+            showImages(images[i]);
+        }
+
         //chuyen sang gio hang
         img_carduser = v.findViewById(R.id.img_carduser);
         img_carduser.setOnClickListener(new View.OnClickListener() {
@@ -164,19 +139,23 @@ public class UserFragment extends Fragment {
                                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_getPass, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            if (response.equals("success")) {
-                                                Intent intent = new Intent(getContext(), ChangePasssUserActivity.class);
-                                                startActivity(intent);
-                                            } else if (response.equals("false")) {
-                                                new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
-                                                        .setTitleText("Kiểm tra lại mật khẩu")
-                                                        .show();
+                                            try {
+                                                if (response.equals("success")) {
+                                                    Intent intent = new Intent(getContext(), ChangePasssUserActivity.class);
+                                                    startActivity(intent);
+                                                } else if (response.equals("false")) {
+                                                    new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE)
+                                                            .setTitleText("Kiểm tra lại mật khẩu")
+                                                            .show();
+                                                }
+                                            }catch (Exception e){
+                                                e.printStackTrace();
                                             }
                                         }
                                     }, new Response.ErrorListener() {
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(getContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Lỗi", Toast.LENGTH_SHORT).show();
                                         }
                                     }) {
                                         @Override
@@ -270,6 +249,17 @@ public class UserFragment extends Fragment {
         txtAddressuser.setText(address);
         Picasso.get().load(image).into(crice_imageuser);
 
+    }
+    //slide view
+    public void showImages(int img){
+        ImageView imageView = new ImageView(getContext());
+        imageView.setBackgroundResource(img);
+
+        viewFlipperUser.addView(imageView);
+        viewFlipperUser.setFlipInterval(2000);
+        viewFlipperUser.setAutoStart(true);
+        viewFlipperUser.setInAnimation(getContext(), android.R.anim.slide_in_left);
+        viewFlipperUser.setOutAnimation(getContext(), android.R.anim.slide_out_right);
     }
 }
 

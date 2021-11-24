@@ -1,6 +1,7 @@
 package com.kiennv.duanphonestore.User.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiennv.duanphonestore.R;
+import com.kiennv.duanphonestore.User.Activity.OrderDetailActyvity;
 import com.kiennv.duanphonestore.User.Model.CardSTT;
 import com.kiennv.duanphonestore.User.Model.SanPham;
 
@@ -63,6 +65,17 @@ public class CardSTTAdaper extends RecyclerView.Adapter<CardSTTAdaper.ViewHolder
             txtDate=itemView.findViewById(R.id.DateTTGH);
             txtStatus=itemView.findViewById(R.id.statusTTGH);
             txtreceivedDate=itemView.findViewById(R.id.receivedDateTTGH);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, OrderDetailActyvity.class);
+                    intent.putExtra("chitietsanpham", cardlist.get(getPosition()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

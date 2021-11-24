@@ -19,7 +19,10 @@
             android:background="@drawable/gradientbackground"
             android:gravity="center"
             android:orientation="vertical">
-
+<!--            <ImageView-->
+<!--                style="@style/parent"-->
+<!--                android:background="@drawable/ic_login_bk"-->
+<!--                android:contentDescription="login background" />-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,10 +49,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:textStyle="italic|bold"
                         android:text="Chào mừng,"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="22sp"
+                        android:textStyle="italic" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="100dp"
@@ -74,24 +77,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="nhom 1"
+                        android:text="user"
                         android:textColor="#fff"
                         android:textSize="22sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
             </LinearLayout>
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="200dp"-->
-            <!--                android:orientation="horizontal"-->
-            <!--                >-->
-            <!--                <ImageView-->
-            <!--                    style="@style/parent"-->
-            <!--                    android:background="@drawable/ic_login_bk"-->
-            <!--                    android:contentDescription="login background" />-->
 
-            <!--            </LinearLayout>-->
         </LinearLayout>
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
@@ -128,41 +121,35 @@
                         android:textColor="#000000"/>
 
                 </LinearLayout>
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="wrap_content"
-                    android:background="#00a5ff"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="25dp"
-                    />
+<!--                <View-->
+<!--                    android:layout_width="2dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#00a5ff"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginBottom="25dp"-->
+<!--                    />-->
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/img_chatadminuser"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/chatting" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="italic|bold"
-                        android:textSize="18dp"
-                        android:text="Hỗ trợ"
-                        android:paddingTop="10dp"
-                        android:textColor="#000000"/>
+                        <ViewFlipper
+                            android:id="@+id/viewFlipperUser"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_height="match_parent"/>
 
                 </LinearLayout>
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="wrap_content"
-                    android:background="#00a5ff"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="25dp"
-                    />
+<!--                <View-->
+<!--                    android:layout_width="2dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#00a5ff"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginBottom="25dp"-->
+<!--                    />-->
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="vertical"
@@ -222,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="20dp"
+                android:paddingLeft="10dp"
                 android:text="0966 225 225"
                 android:textColor="#000000"
                 android:textSize="18dp" />
@@ -236,7 +223,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_height="50dp" >
+            android:layout_height="wrap_content"
+            android:minHeight="50dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,7 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="20dp"
+                android:paddingLeft="10dp"
                 android:text="Tan phu, ho chi minh"
                 android:textColor="#000000"
                 android:textSize="18dp" />
@@ -326,11 +314,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/logout"
+            android:background="@drawable/logoutxml"
             android:text="Đăng xuất"
             android:textAllCaps="false"
             android:textColor="#ffffff"
-            android:drawableLeft="@drawable/dangxuat"
             android:textSize="16dp" />
 
     </LinearLayout>

@@ -74,9 +74,9 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                 if (!passMoi.equals(passMoinhaplai)) {
                     edtPasswordnewchange.setError("Mật khẩu không giống nhau");
                 }
-                if (passMoi.length() >= 6 || passMoinhaplai.length() >= 6) {
-                    edtPasswordnewchange.setError("Mật khẩu phải > = 6 ký tự");
-                    edtPasswordnewnhaplai.setError("Mật khẩu phải > = 6 ký tự");
+                if (passMoi.length() < 6 || passMoinhaplai.length() < 6) {
+                    edtPasswordnewchange.setError("Mật khẩu phải > 6 ký tự");
+                    edtPasswordnewnhaplai.setError("Mật khẩu phải >  6 ký tự");
                     return;
                 } else {
                     StringRequest request = new StringRequest(Request.Method.POST, URL_updatePass,
@@ -92,7 +92,7 @@ public class ChangePasssUserActivity extends AppCompatActivity {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override

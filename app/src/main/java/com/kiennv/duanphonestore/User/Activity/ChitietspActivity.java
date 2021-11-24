@@ -34,6 +34,7 @@ import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.Card;
 import com.kiennv.duanphonestore.User.Model.CardSTT;
 import com.kiennv.duanphonestore.User.Model.Comment;
+import com.kiennv.duanphonestore.User.Model.Favourite;
 import com.kiennv.duanphonestore.User.Model.SanPham;
 import com.kiennv.duanphonestore.User.Model.User;
 import com.squareup.picasso.Picasso;
@@ -51,6 +52,7 @@ import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ChitietspActivity extends AppCompatActivity {
+
     private ImageView imgProduct,imgTruChitietsp,imgCongChitietsp,imageSend;
     private Button btnaddcardProduct;
     private TextView txtNameProduct, txtGiaProduct,txtChitietProduct,txtSoluongChitietsp;
@@ -58,7 +60,6 @@ public class ChitietspActivity extends AppCompatActivity {
     private String ten="";
     private int gia=0,id=0;
     private String hinhanh="";
-    private static User user;
     private int number=1;
     private TextInputEditText txtcomment;
     private String tenuser="";
@@ -68,8 +69,6 @@ public class ChitietspActivity extends AppCompatActivity {
     private RecyclerView rcvCommment;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList;
-    private int couter=0;
-    private int posion;
     private static String URL_Comment = "http://10.0.2.2/Duan/question/comment.php";
     private static String URL_getComment = "http://10.0.2.2/Duan/question/getComment.php";
 
@@ -88,60 +87,15 @@ public class ChitietspActivity extends AppCompatActivity {
         txtcomment=findViewById(R.id.txtComment);
         rcvCommment=findViewById(R.id.RCV_Comment);
         commentList=new ArrayList<>();
+        commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
         imageSend=findViewById(R.id.imgSend);
         showgetCommment();
 
-        imageSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String cmt = txtcomment.getText().toString();
-                //lay du lieu user
-                if(TextUtils.isEmpty(cmt)){
-                    txtcomment.setError("Chưa phản hồi.");
-                    return;
-                }
-                SharedPreferences sp=getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
-                String edtcomment= txtcomment.getText().toString();
-                images=String.valueOf(sp.getString("images",""));
-                name=String.valueOf(sp.getString("name",""));
-                idUS=sp.getInt("id",0);
-
-                StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_Comment, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(v.getContext(), "Cảm ơn bạn đã phản hồi.",Toast.LENGTH_LONG).show();
-                        // int id, String nameUS, String imageUS, String status, int idUS, int idSP
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> map=new HashMap<>();
-                        map.put("imageUS",images);
-                        map.put("nameUS",name);
-                        map.put("idUS",String.valueOf(idUS));
-                        map.put("status",edtcomment);
-                        map.put("idSP",String.valueOf(id));
-//                        Log.e( "getusser: ", String.valueOf(idSP));
-                        //int id, String nameUS, String imageUS, String status, int idSP
-
-                        return map;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(v.getContext());
-                requestQueue.add(stringRequest);
-            }
-        });
 
         //lay thong tin san pham
         GetInfomation();
-        //getusser();
+
+
         try {
             //them san pham vao gio hang
             Eventaddgiohang();
@@ -167,7 +121,7 @@ public class ChitietspActivity extends AppCompatActivity {
         DecimalFormat decimalFormat=new DecimalFormat("###,###,###");
         txtGiaProduct.setText(decimalFormat.format(gia)+" VNĐ");
         Picasso.get().load(hinhanh).into(imgProduct);
-        commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
+
         EventImages();
         //cong them so luong
         imgCongChitietsp.setOnClickListener(new View.OnClickListener() {
@@ -267,28 +221,14 @@ public class ChitietspActivity extends AppCompatActivity {
                         idUS = jsonObject.getInt("idUS");
                         idSP = jsonObject.getInt("idSP");
 //                        Log.e("onBindViewHolder1111: ",imageUS);
-                        // ArrayList<ModelChat> list=new ArrayList<>(lisymodelChats);
-//                        list.add(modelChat);
-//                        lisymodelChats.clear();
-//                        lisymodelChats.addAll(list);
-//                        chatdapter.notifyDataSetChanged();
-//                        lv.setAdapter(chatdapter);
-                        //get ve mang
-
                         commentList.add(new Comment(id, nameUS, imageUS, status, idUS,idSP));
-                        //  commentList.clear();
-
-
-
-
+                        //Log.e( "oncomment: ",String.valueOf(idSP) );
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 rcvCommment.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                 rcvCommment.setAdapter(commentAdapter);
-                commentAdapter.notifyDataSetChanged();
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -311,5 +251,51 @@ public class ChitietspActivity extends AppCompatActivity {
         //thuc thi requestQueue
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
+
+        imageSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cmt = txtcomment.getText().toString();
+                //lay du lieu user
+                if(TextUtils.isEmpty(cmt)){
+                    txtcomment.setError("Chưa phản hồi.");
+                    return;
+                }
+                SharedPreferences sp=getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+                String edtcomment= txtcomment.getText().toString();
+                images=String.valueOf(sp.getString("images",""));
+                name=String.valueOf(sp.getString("name",""));
+                idUS=sp.getInt("id",0);
+
+                StringRequest stringRequest1=new StringRequest(Request.Method.POST, URL_Comment, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(v.getContext(), "Cảm ơn bạn đã phản hồi.",Toast.LENGTH_LONG).show();
+                        rcvCommment.setAdapter(commentAdapter);
+                        txtcomment.setText("");
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> map=new HashMap<>();
+                        map.put("imageUS",images);
+                        map.put("nameUS",name);
+                        map.put("idUS",String.valueOf(idUS));
+                        map.put("status",edtcomment);
+                        map.put("idSP",String.valueOf(id));
+                        commentList.add(new Comment( name, images, edtcomment, idUS,id));
+                        return map;
+                    }
+                };
+                RequestQueue requestQueue1 = Volley.newRequestQueue(v.getContext());
+                requestQueue1.add(stringRequest1);
+            }
+        });
     }
 }

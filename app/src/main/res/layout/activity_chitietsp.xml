@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:text="35.000.000VND"
+                    android:text="35.000.000 VND"
                     android:textColor="#FF0000"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -227,24 +227,25 @@
     </ScrollView>
 
         <RelativeLayout
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp">
+
             <Button
                 android:id="@+id/btnaddcardProduct"
-                android:textColor="#FFF"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_alignParentBottom="true"
-                android:text="Thêm giỏ hàng"
-                android:drawableLeft="@drawable/addcart"
-                android:background="@drawable/login_button_bk"
-                android:textAllCaps="false"
-                android:textSize="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:background="@drawable/login_button_bk"
+                android:drawableLeft="@drawable/addcart"
+                android:text="Thêm giỏ hàng"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

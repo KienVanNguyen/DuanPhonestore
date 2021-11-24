@@ -16,6 +16,13 @@ public class Comment {
         this.idUS = idUS;
         this.idSP = idSP;
     }
+    public Comment(String nameUS, String imageUS, String status, int idUS, int idSP) {
+        this.nameUS = nameUS;
+        this.imageUS = imageUS;
+        this.status = status;
+        this.idUS = idUS;
+        this.idSP = idSP;
+    }
 
     public int getId() {
         return id;

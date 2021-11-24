@@ -1,11 +1,12 @@
 package com.kiennv.duanphonestore.User.Model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 
-public class CardSTT {
+public class CardSTT implements Serializable {
     private int id;
     private int IdUser;
-    private  long Price;
+    private long Price;
     private String Date;
     private String Status;
     private String ReceivedDate;

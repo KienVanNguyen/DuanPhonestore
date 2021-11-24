@@ -6,7 +6,7 @@ public class User implements Serializable {
     private int id;
     private String phone, password, fullName, email, address;
     private String images;
-
+    private String code;
 
     public User(int id,String fullName, String email,String address, String phone, String password, String images) {
         this.id = id;
@@ -21,6 +21,14 @@ public class User implements Serializable {
 
     public User(){
 
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public int getId() {

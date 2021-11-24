@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,9 +28,9 @@ import java.util.Map;
 
 public class ForgotPassActivity extends AppCompatActivity {
     private ImageView imgBackForgot;
-    private TextInputEditText edtEmailForgot, edtPhoneForgot;
+    private TextInputEditText edtEmailForgot, edtCodeForgot, edtPassForgot;
     private Button btnConfirmForgot;
-    private String URL_fogot_pass = "http://10.0.2.2/Duan/user/fogotpassword.php";
+    private TextView txtTimeForgot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,9 @@ public class ForgotPassActivity extends AppCompatActivity {
 
         imgBackForgot = findViewById(R.id.imgBackForgot);
         edtEmailForgot = findViewById(R.id.edtEmailForgot);
-        edtPhoneForgot = findViewById(R.id.edtPhoneForgot);
+        edtCodeForgot = findViewById(R.id.edtCodeForgot);
+        edtPassForgot = findViewById(R.id.edtPassForgot);
+        txtTimeForgot = findViewById(R.id.txtTimeForgot);
         btnConfirmForgot = findViewById(R.id.btnConfirmForgot);
 
         imgBackForgot.setOnClickListener(new View.OnClickListener() {
@@ -48,39 +51,7 @@ public class ForgotPassActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnConfirmForgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mail = edtEmailForgot.getText().toString();
-                String phone = edtPhoneForgot.getText().toString();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_fogot_pass, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("tagco.nvertstr", "["+response+"]");
-                        if (response.equals("success")){
-                            Toast.makeText(ForgotPassActivity.this, "Kiểm tra Email để lấy lại mật khẩu.", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(ForgotPassActivity.this, "Gửi mật khẩu thất bại.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ForgotPassActivity.this, "Kiểm tra", Toast.LENGTH_SHORT).show();
-                    }
-                }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> data = new HashMap<>();
-                        data.put("email", mail);
-                        data.put("phone", phone);
-                        return data;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                requestQueue.add(stringRequest);
-            }
-        });
+
 
     }
 }

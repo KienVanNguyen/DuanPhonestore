@@ -7,6 +7,7 @@ public class SanPham implements Serializable {
     private int price;
     private int id;
     private String image_SP;
+    private String quantity;
     private String category_id;
     private String Motasanpham;
 
@@ -14,13 +15,22 @@ public class SanPham implements Serializable {
 
     }
 
-    public SanPham(int id, String name, int price, String image_SP,String category_id, String motasanpham) {
+    public SanPham(String name, int price, int id, String image_SP, String quantity, String category_id, String motasanpham) {
         this.name = name;
-        this.id = id;
         this.price = price;
-        this.category_id = category_id;
+        this.id = id;
         this.image_SP = image_SP;
-        this.Motasanpham = motasanpham;
+        this.quantity = quantity;
+        this.category_id = category_id;
+        Motasanpham = motasanpham;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getMotasanpham() {

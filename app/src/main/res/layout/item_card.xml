@@ -51,16 +51,11 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:gravity="right"
-                        android:src="@drawable/remove"
+                        android:src="@drawable/removefavourite"
                         />
 
                 </LinearLayout>
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Android"-->
-<!--                    android:layout_marginTop="11dp"/>-->
                 <TextView
                     android:id="@+id/tvPriceItemcard"
                     android:layout_width="wrap_content"
