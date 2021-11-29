@@ -18,6 +18,7 @@
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/button_product.xml" value="0.2703125" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/chitietspsize.xml" value="0.2703125" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/head_bg.xml" value="0.26205128205128203" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_code.xml" value="0.26614583333333336" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_lock.xml" value="0.25277777777777777" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_login_bk.xml" value="0.2703125" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/drawable/ic_mail.xml" value="0.26614583333333336" />
@@ -40,6 +41,7 @@
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_admin.xml" value="0.12360688956433637" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_change_passs_user.xml" value="0.24010416666666667" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chatadmin.xml" value="0.264" />
+        <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chi_tiet_favourite.xml" value="0.12158054711246201" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chitiet_ttdonhang.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_chitietsp.xml" value="0.264" />
         <entry key="..\:/Du an truong/DuanPhonestore/app/src/main/res/layout/activity_edit_user.xml" value="0.25416666666666665" />

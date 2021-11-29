@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kiennv.duanphonestore.R;
+import com.kiennv.duanphonestore.User.Activity.ChiTietFavourite;
 import com.kiennv.duanphonestore.User.Activity.ChitietspActivity;
+import com.kiennv.duanphonestore.User.Fragment.CardFragment;
+import com.kiennv.duanphonestore.User.Fragment.HomeFragment;
 import com.kiennv.duanphonestore.User.Model.Favourite;
 import com.kiennv.duanphonestore.User.Model.SanPham;
 import com.squareup.picasso.Picasso;
@@ -39,7 +43,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
     private LayoutInflater layoutInflater;
     private Context context;
-    private List<Favourite> favouriteList;
+    public static List<Favourite> favouriteList;
     private SharedPreferences loginPreferences;
     private String URL_deleteFavourite = "http://10.0.2.2/Duan/question/deleteFavourite.php";
 
@@ -68,55 +72,56 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         holder.imgdeletefavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                    //Cài đặt các thuộc tính
-                    builder.setTitle("Xóa sản phẩm");
-                    builder.setMessage("Bạn có muốn xóa " + favouriteList.get(pos).getName() + " khỏi yêu thích.");
-                    // Cài đặt button Cancel- Hiển thị Toast
-                    builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            StringRequest request = new StringRequest(Request.Method.POST, URL_deleteFavourite,
-                                    new Response.Listener<String>() {
-                                        @Override
-                                        public void onResponse(String response) {
-                                            try {
-                                                Delete(pos);
-                                                Toast.makeText(v.getContext(), "Đã xóa", Toast.LENGTH_SHORT).show();
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                //Cài đặt các thuộc tính
+                builder.setTitle("Xóa sản phẩm");
+                builder.setMessage("Bạn có muốn xóa " + favouriteList.get(pos).getName() + " khỏi yêu thích.");
+                // Cài đặt button Cancel- Hiển thị Toast
+                builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        StringRequest request = new StringRequest(Request.Method.POST, URL_deleteFavourite,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            Delete(pos);
+                                            Toast.makeText(v.getContext(), "Đã xóa", Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(v.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }) {
-                                @Override
-                                protected Map<String, String> getParams() throws AuthFailureError {
 
-                                    Map<String, String> params = new HashMap<>();
-                                    params.put("id", String.valueOf(favouriteList.get(pos).getId()));
-                                    return params;
-                                }
-                            };
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(v.getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
 
-                            RequestQueue requestQueue = Volley.newRequestQueue(v.getContext());
-                            requestQueue.add(request);
+                                Map<String, String> params = new HashMap<>();
+                                params.put("id", String.valueOf(favouriteList.get(pos).getId()));
+                                return params;
+                            }
+                        };
 
-                            dialog.cancel();
-                        }
-                    });
-                    builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    builder.show();
-                }
+                        RequestQueue requestQueue = Volley.newRequestQueue(v.getContext());
+                        requestQueue.add(request);
+
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -138,15 +143,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    loginPreferences = v.getContext().getSharedPreferences("motasanphamnoibat", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = loginPreferences.edit();
-//                    editor.putString("id", String.valueOf(favouriteList.get(getPosition())));
-
-//                    editor.commit();
-//                    Intent intent = new Intent(context, ChitietspActivity.class);
-//                    intent.putExtra("motasanphamnoibat", favouriteList.get(getPosition()));
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, ChiTietFavourite.class);
+                    intent.putExtra("motasanphamCTF", favouriteList.get(getPosition()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }

@@ -59,12 +59,12 @@ public class HomeFragment extends Fragment {
     private static ShimmerTextView shimmerTextPhone;
     private static ViewFlipper viewFlipper;
     private static ImageView img_cardhome;
-    private static RecyclerView rcv_spmoinhat,rcv_spbanchay;
+    public static RecyclerView rcv_spmoinhat,rcv_spbanchay;
     private static EditText edtTimKiem;
     private static SanPhamAdapter sanPhamAdapter;
-    private static FavouriteAdapter favouriteAdapter;
+    public static FavouriteAdapter favouriteAdapter;
     private static List<SanPham> sanPhamList;
-    private List<Favourite> favouriteList;
+    public static List<Favourite> favouriteList;
     private static RequestQueue requestQueue;
     private int idUS=0;
     private static TextView txtSeeallSPmoinhat;
@@ -103,7 +103,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         //show sp
         sanPhamList = new ArrayList<>();
         favouriteList = new ArrayList<>();
@@ -111,7 +110,6 @@ public class HomeFragment extends Fragment {
         showSanphammoinhat();
         //show sp readFavourite
         showSanphamnoibat();
-
         //chuyen sang gio hang
         img_cardhome = v.findViewById(R.id.img_cardhome);
         img_cardhome.setOnClickListener(new View.OnClickListener() {
@@ -160,8 +158,6 @@ public class HomeFragment extends Fragment {
                 //toLowerCase cho phép chuyển đổi mọi ký tự viết Hoa của chuỗi thành ký tự viết thường
                 if (item.getName().toLowerCase().contains(text.toLowerCase())){
                     sanPhams.add(item);
-                }else{
-                    Toast.makeText(getContext(),"Không có dữ liệu",Toast.LENGTH_SHORT).show();
                 }
             }
             sanPhamAdapter.searchspList(sanPhams);
@@ -170,7 +166,6 @@ public class HomeFragment extends Fragment {
         }
 
     }
-    //show san pham yeu thich
     private void showSanphamnoibat() {
         SharedPreferences sp = getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
         idUS=sp.getInt("id",0);
@@ -180,6 +175,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 int id = 0;
+                int idSP=0;
                 int idUS = 0;
                 String name = "";
                 int price = 0;
@@ -191,15 +187,16 @@ public class HomeFragment extends Fragment {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         //get du lieu cho bien
                         id = jsonObject.getInt("id");
+                        idSP = jsonObject.getInt("idSP");
                         idUS = jsonObject.getInt("idUS");
                         price = jsonObject.getInt("price");
                         name = jsonObject.getString("name");
                         images = jsonObject.getString("image_SP");
                         mota = jsonObject.getString("mota");
-
-                        favouriteList.add(new Favourite(id, idUS, name, price, images,mota));
+                        Log.e( "onResponse: ",String.valueOf(id));
+                        favouriteList.add(new Favourite(id,idSP, idUS, name, price, images,mota));
                         //  commentList.clear();
-//                        Log.e( "OrderDetail: ",String.valueOf(name) );
+                       // Log.e( "OrderDetail: ",String.valueOf(idSP));
 
                     }
                 } catch (JSONException e) {
@@ -223,7 +220,7 @@ public class HomeFragment extends Fragment {
                 HashMap<String, String> param = new HashMap<String, String>();
                 //dua vao idsanpham tren php
                 param.put("idUS", String.valueOf(idUS));
-//                Log.e( "onBindViewHolder: ",String.valueOf(idUS));
+                Log.e( "onBindViewHoldersdsdfda: ",String.valueOf(idUS));
                 //return param de gui request
                 return param;
             }
@@ -233,7 +230,7 @@ public class HomeFragment extends Fragment {
         requestQueue.add(request);
     }
     
-    //show tat ca sp
+    //show sp
     private void showSanphammoinhat() {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_ShowSP, null,
                 new Response.Listener<JSONObject>() {
@@ -273,7 +270,6 @@ public class HomeFragment extends Fragment {
     public void showImages(int img){
         ImageView imageView = new ImageView(getContext());
         imageView.setBackgroundResource(img);
-
         viewFlipper.addView(imageView);
         viewFlipper.setFlipInterval(3000);
         viewFlipper.setAutoStart(true);

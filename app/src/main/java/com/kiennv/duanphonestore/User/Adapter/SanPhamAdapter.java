@@ -26,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kiennv.duanphonestore.R;
 import com.kiennv.duanphonestore.User.Activity.ChitietspActivity;
+import com.kiennv.duanphonestore.User.Fragment.HomeFragment;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.Comment;
 import com.kiennv.duanphonestore.User.Model.Favourite;
@@ -45,6 +46,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
     private static String URL_getFavourite = "http://10.0.2.2/Duan/question/Favourite.php";
     private int idUS=0;
 
+   // private int id=0;
    public SanPhamAdapter(Context context,List<SanPham> sanPhamList1){
        this.context = context;
        this.layoutInflater = LayoutInflater.from(context);
@@ -70,46 +72,101 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         holder.btnlikesp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sp= v.getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
-                idUS=sp.getInt("id",0);
-                StringRequest stringRequest1=new StringRequest(Request.Method.POST, URL_getFavourite, new Response.Listener<String>() {
+                boolean exit=false;
+                if(HomeFragment.favouriteList.size()>0){
+                for (int i = 0; i < HomeFragment.favouriteList.size(); i++) {
+                    Log.e("onClick: ", String.valueOf(HomeFragment.favouriteList.get(i).getIdSP()));
+                    if (sanPhamList.get(position).getId() == HomeFragment.favouriteList.get(i).getIdSP()) {
+                        Toast.makeText(v.getContext(), "Sản phẩm đã được thêm vào mục nổi bật", Toast.LENGTH_LONG).show();
+                        exit = true;
+                    }
+                    }
+
+                if(exit==false) {
+                SharedPreferences sp = v.getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+                idUS = sp.getInt("id", 0);
+                int idSP = (sanPhamList.get(position).getId());
+                String name = sanPhamList.get(position).getName();
+                int price = sanPhamList.get(position).getPrice();
+                String images = sanPhamList.get(position).getImage_SP();
+                String mota = sanPhamList.get(position).getMotasanpham();
+                StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL_getFavourite, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            holder.btnlikesp.setImageResource(R.drawable.heart);
-//                          Log.i("tagco.nvertstr", "["+response+"]");
-                            Toast.makeText(v.getContext(), "Đã thêm sản phẩm nổi bật.",Toast.LENGTH_LONG).show();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                        holder.btnlikesp.setImageResource(R.drawable.heart);
+//                        Log.i("tagco.nvertstr", "["+response+"]");
+                        HomeFragment.rcv_spbanchay.setAdapter(HomeFragment.favouriteAdapter);
+//                        Toast.makeText(v.getContext(), response.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), "Đã thêm sản phẩm nổi bật.", Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(v.getContext(), error.getMessage(),Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> map=new HashMap<>();
-                        map.put("id", String.valueOf(sanPhamList.get(position).getId()));
-                        map.put("idUS",String.valueOf(idUS));
-                        map.put("name",sanPhamList.get(position).getName());
-                        map.put("price", String.valueOf(sanPhamList.get(position).getPrice()));
-                        map.put("image_SP",sanPhamList.get(position).getImage_SP());
-                        map.put("mota",sanPhamList.get(position).getMotasanpham());
-
-//                        Log.e( "getParams: ", String.valueOf(map.put("name", sanPhamList.get(position).getName())));
-//                        Log.e( "getParams: ", String.valueOf(map.put("price", String.valueOf(sanPhamList.get(position).getPrice()))));
-//                        Log.e( "getParams: ", String.valueOf(map.put("id", String.valueOf(sanPhamList.get(position).getId()))));
-//                        favouriteList.add(new Favourite( name, images, edtcomment, idUS,id));
+                        Map<String, String> map = new HashMap<>();
+                        map.put("idSP", String.valueOf(idSP));
+                        map.put("idUS", String.valueOf(idUS));
+                        map.put("name", name);
+                        map.put("price", String.valueOf(price));
+                        map.put("image_SP", images);
+                        map.put("mota", mota);
+                        //  Log.e( "getParams: ",String.valueOf(idSP) );
+                        FavouriteAdapter.favouriteList.add(new Favourite(idSP, idUS, name, price, images, mota));
                         return map;
-
                     }
                 };
                 RequestQueue requestQueue1 = Volley.newRequestQueue(v.getContext());
                 requestQueue1.add(stringRequest1);
+
+                    }
+                }else {
+                    SharedPreferences sp = v.getContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+                    idUS = sp.getInt("id", 0);
+                    int idSP = (sanPhamList.get(position).getId());
+                    String name = sanPhamList.get(position).getName();
+                    int price = sanPhamList.get(position).getPrice();
+                    String images = sanPhamList.get(position).getImage_SP();
+                    String mota = sanPhamList.get(position).getMotasanpham();
+                    StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL_getFavourite, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            holder.btnlikesp.setImageResource(R.drawable.heart);
+//                        Log.i("tagco.nvertstr", "["+response+"]");
+                            HomeFragment.rcv_spbanchay.setAdapter(HomeFragment.favouriteAdapter);
+//                        Toast.makeText(v.getContext(), response.toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(), "Đã thêm sản phẩm nổi bật.", Toast.LENGTH_LONG).show();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(v.getContext(), error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("idSP", String.valueOf(idSP));
+                            map.put("idUS", String.valueOf(idUS));
+                            map.put("name", name);
+                            map.put("price", String.valueOf(price));
+                            map.put("image_SP", images);
+                            map.put("mota", mota);
+                            //  Log.e( "getParams: ",String.valueOf(idSP) );
+                            FavouriteAdapter.favouriteList.add(new Favourite(idSP, idUS, name, price, images, mota));
+                            return map;
+                        }
+                    };
+                    RequestQueue requestQueue1 = Volley.newRequestQueue(v.getContext());
+                    requestQueue1.add(stringRequest1);
+                }
+
+
             }
+
         });
 
     }

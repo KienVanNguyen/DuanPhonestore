@@ -170,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 if (password.length() < 6) {
-                    edtPassRe.setError("Mật khẩu phải > 6 ký tự");
+                    edtPassRe.setError("Mật khẩu phải > = 6 ký tự");
                     return;
                 }
                 if (TextUtils.isEmpty(fullName)) {
@@ -256,7 +256,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //bat loi dinh dang email
     private boolean isValidEmail(String target) {
-        if (target.matches("[a-zA-Z0-9._-]+@[gmail]+.[com]+"))
+        if (target.matches("[a-zA-Z0-9._-]+@[a-z]+.[com]+"))
             return true;
         else {
             edtEmailRe.setError("Email sai định dạng! (abc@gmail.com)");

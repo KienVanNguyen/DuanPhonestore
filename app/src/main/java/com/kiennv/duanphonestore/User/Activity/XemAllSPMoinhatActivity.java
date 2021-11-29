@@ -175,7 +175,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);
@@ -210,7 +210,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);
@@ -244,7 +244,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);
@@ -278,7 +278,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);
@@ -312,7 +312,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);
@@ -346,7 +346,7 @@ public class XemAllSPMoinhatActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("tag", "onErrorResponse: " + error.getMessage());
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
         requestQueue.add(request);

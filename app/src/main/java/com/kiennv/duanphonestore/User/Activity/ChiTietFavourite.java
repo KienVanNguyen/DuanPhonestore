@@ -1,13 +1,10 @@
 package com.kiennv.duanphonestore.User.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,12 +24,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kiennv.duanphonestore.R;
-import com.kiennv.duanphonestore.User.Adapter.CardSTTAdaper;
 import com.kiennv.duanphonestore.User.Adapter.CommentAdapter;
-import com.kiennv.duanphonestore.User.Fragment.HomeFragment;
 import com.kiennv.duanphonestore.User.MainActivity;
 import com.kiennv.duanphonestore.User.Model.Card;
-import com.kiennv.duanphonestore.User.Model.CardSTT;
 import com.kiennv.duanphonestore.User.Model.Comment;
 import com.kiennv.duanphonestore.User.Model.Favourite;
 import com.kiennv.duanphonestore.User.Model.SanPham;
@@ -51,8 +45,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class ChitietspActivity extends AppCompatActivity {
-
+public class ChiTietFavourite extends AppCompatActivity {
     private ImageView imgProduct,imgTruChitietsp,imgCongChitietsp,imageSend;
     private Button btnaddcardProduct;
     private TextView txtNameProduct, txtGiaProduct,txtChitietProduct,txtSoluongChitietsp;
@@ -66,6 +59,7 @@ public class ChitietspActivity extends AppCompatActivity {
     private String tenuser="";
     private String name="";
     private int idUS=0;
+    private int idSP=0;
     private String images="";
     private RecyclerView rcvCommment;
     private CommentAdapter commentAdapter;
@@ -78,82 +72,42 @@ public class ChitietspActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chitietsp);
-        imgProduct = findViewById(R.id.imgProduct);
-        btnaddcardProduct = findViewById(R.id.btnaddcardProduct);
-        txtNameProduct = findViewById(R.id.txtNameProduct);
-        txtGiaProduct = findViewById(R.id.txtGiaProduct);
-        txtChitietProduct = findViewById(R.id.txtChitietProduct);
-        imgTruChitietsp = findViewById(R.id.imgTruChitietsp);
-        imgCongChitietsp = findViewById(R.id.imgCongChitietsp);
-        txtSoluongChitietsp = findViewById(R.id.txtSoluongChitietsp);
-        txtcomment=findViewById(R.id.txtComment);
-        rcvCommment=findViewById(R.id.RCV_Comment);
+        setContentView(R.layout.activity_chi_tiet_favourite);
+        imgProduct = findViewById(R.id.imgProductCTF);
+        btnaddcardProduct = findViewById(R.id.btnaddcardProductCTF);
+        txtNameProduct = findViewById(R.id.txtNameProductCTF);
+        txtGiaProduct = findViewById(R.id.txtGiaProductCTF);
+        txtChitietProduct = findViewById(R.id.txtChitietProductCTF);
+        imgTruChitietsp = findViewById(R.id.imgTruChitietspCTF);
+        imgCongChitietsp = findViewById(R.id.imgCongChitietspCTF);
+        txtSoluongChitietsp = findViewById(R.id.txtSoluongChitietspCTF);
+        txtcomment=findViewById(R.id.txtCommentCTF);
+        rcvCommment=findViewById(R.id.RCV_CommentCTF);
+        imageSend=findViewById(R.id.imgSendCTF);
         commentList=new ArrayList<>();
         commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
-        imageSend=findViewById(R.id.imgSend);
-        showgetCommment();
-
-        //lay thong tin san pham
         GetInfomation();
-
-        try {
-            //them san pham vao gio hang
-            Eventaddgiohang();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
+        Eventaddgiohang();
+        showgetCommment();
+//        SharedPreferences sp=getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+//        String edtcomment= txtcomment.getText().toString();
+//        images=String.valueOf(sp.getString("images",""));
+//        name=String.valueOf(sp.getString("name",""));
+//        idUS=sp.getInt("id",0);
+//        Log.e( "onCreate: ",String.valueOf(idUS) );
 
     }
-    //lay thong tin san pham
-    private void GetInfomationnoibat() {
-        //nhan du lieu 1 object
-        Favourite sanPhamMN= (Favourite) getIntent().getSerializableExtra("motasanphamnoibat");
-        ten=sanPhamMN.getName();
-        gia=sanPhamMN.getPrice();
-        hinhanh=sanPhamMN.getImage_SP();
-        mota=sanPhamMN.getMota();
-        txtChitietProduct.setText(mota);
-        id=sanPhamMN.getId();
-        txtNameProduct.setText(ten);
-        //DecimalFormat định dạng cho số thập phân
-        DecimalFormat decimalFormat=new DecimalFormat("###,###,###");
-        txtGiaProduct.setText(decimalFormat.format(gia)+" VNĐ");
-        Picasso.get().load(hinhanh).into(imgProduct);
-
-        EventImages();
-        //cong them so luong
-        imgCongChitietsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                number=number+1;
-                txtSoluongChitietsp.setText(String.valueOf(number));
-                EventImages();
-            }
-        });
-        //tru so luong
-        imgTruChitietsp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                number=number-1;
-                txtSoluongChitietsp.setText(String.valueOf(number));
-                EventImages();
-            }
-        });
-    }
-
-    //lay thong tin san pham
     private void GetInfomation() {
 
         //nhan du lieu 1 object
-        SanPham sanPhamMN= (SanPham) getIntent().getSerializableExtra("motasanpham");
-        ten=sanPhamMN.getName();
-        gia=sanPhamMN.getPrice();
-        hinhanh=sanPhamMN.getImage_SP();
-        mota=sanPhamMN.getMotasanpham();
+        Favourite favourite= (Favourite) getIntent().getSerializableExtra("motasanphamCTF");
+        ten=favourite.getName();
+        gia=favourite.getPrice();
+        hinhanh=favourite.getImage_SP();
+        mota=favourite.getMota();
         txtChitietProduct.setText(mota);
-        id=sanPhamMN.getId();
+        id=favourite.getId();
+        idSP=favourite.getIdSP();
         txtNameProduct.setText(ten);
         //DecimalFormat định dạng cho số thập phân
         DecimalFormat decimalFormat=new DecimalFormat("###,###,###");
@@ -161,6 +115,7 @@ public class ChitietspActivity extends AppCompatActivity {
         Picasso.get().load(hinhanh).into(imgProduct);
 
         EventImages();
+
         //cong them so luong
         imgCongChitietsp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,10 +132,10 @@ public class ChitietspActivity extends AppCompatActivity {
                 number=number-1;
                 txtSoluongChitietsp.setText(String.valueOf(number));
                 EventImages();
+
             }
         });
     }
-    //an hien so luong san pham max min
     public void EventImages(){
         int soluong= Integer.parseInt(String.valueOf(number));
         if(soluong>1){
@@ -194,7 +149,6 @@ public class ChitietspActivity extends AppCompatActivity {
             imgCongChitietsp.setVisibility(View.INVISIBLE);
         }
     }
-    //them san pham vao gio hang
     public void Eventaddgiohang(){
         btnaddcardProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,7 +185,7 @@ public class ChitietspActivity extends AppCompatActivity {
                     long giamoi=soluong*gia;
                     MainActivity.listcard.add(new Card(id,ten,giamoi,hinhanh,soluong));
                 }
-                new SweetAlertDialog(ChitietspActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                new SweetAlertDialog(ChiTietFavourite.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Thêm sản phẩm vào giỏ hàng thành công")
                         .show();
             }
@@ -296,8 +250,8 @@ public class ChitietspActivity extends AppCompatActivity {
                 //HashMap 1.tao key gui len server 2.cai gia tri gui len cho no
                 HashMap<String, String> param = new HashMap<String, String>();
                 //dua vao idsanpham tren php
-                param.put("idsanpham", String.valueOf(id));
-//                Log.e( "onBindViewHolder: ",String.valueOf(id));
+                param.put("idsanpham", String.valueOf(idSP));
+                Log.e( "onBindViewHolder: ",String.valueOf(idSP));
                 //return param de gui request
                 return param;
             }
@@ -305,7 +259,6 @@ public class ChitietspActivity extends AppCompatActivity {
         //thuc thi requestQueue
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
-
 
 
         imageSend.setOnClickListener(new View.OnClickListener() {
@@ -345,8 +298,8 @@ public class ChitietspActivity extends AppCompatActivity {
                         map.put("nameUS",name);
                         map.put("idUS",String.valueOf(idUS));
                         map.put("status",edtcomment);
-                        map.put("idSP",String.valueOf(id));
-                        commentList.add(new Comment( name, images, edtcomment, idUS,id));
+                        map.put("idSP",String.valueOf(idSP));
+                        commentList.add(new Comment( name, images, edtcomment, idUS,idSP));
                         return map;
 
                     }

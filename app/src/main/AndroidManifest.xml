@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuanPhonestore"
         android:usesCleartextTraffic="true">
+        <activity android:name=".User.Activity.ChiTietFavourite"></activity>
         <activity
             android:name=".User.Activity.ForgotPassActivity"
             android:exported="true" />
@@ -23,7 +24,7 @@
             android:exported="true" />
         <activity
             android:name=".User.Activity.OrderSuccesActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".User.Activity.XemAllSPMoinhatActivity"
             android:exported="true" />
@@ -35,13 +36,11 @@
             android:exported="true" />
         <activity
             android:name=".User.Activity.ChitietspActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".User.Activity.OrderDetailActyvity"
-            android:exported="true"></activity>
-        <activity android:name=".User.MainActivity" >
-
-        </activity>
+            android:exported="true" />
+        <activity android:name=".User.MainActivity"></activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ManhinhChao">

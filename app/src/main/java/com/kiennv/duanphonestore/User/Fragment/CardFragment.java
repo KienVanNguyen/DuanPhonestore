@@ -49,6 +49,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class CardFragment extends Fragment {
     private static TextView tv_diachicard, txtPriceTongtienCard, tvThongBaoGH;
     private static RecyclerView rcv_giohang;
@@ -62,7 +64,7 @@ public class CardFragment extends Fragment {
     private static String URL_InsertOrderDetail= "http://10.0.2.2/Duan/question/orderDetail.php";
     private static RadioButton radioButton;
     private static List<CardSTT> cardFragmentList;
-    private static int idmahoadon=6;
+    private static int idmahoadon=39;
     private static  CardSTT cardSTT;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -192,7 +194,9 @@ public class CardFragment extends Fragment {
                 RequestQueue requestQue = Volley.newRequestQueue(v.getContext());
                 requestQue.add(stringRequest1);
                 }else {
-                    Toast.makeText(v.getContext(), "Vui lòng thêm sản phẩm để thanh toán", Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Vui lòng thêm sản phẩm để thanh toán")
+                            .show();
                 }
             }
         });

@@ -50,6 +50,7 @@ public class OrderDetailActyvity extends AppCompatActivity {
 
         showgetOrderDetail();
 
+
         CardSTT cardSTT= (CardSTT) getIntent().getSerializableExtra("chitietsanpham");
         mahoadon=cardSTT.getId();
       //  Log.e( "onCreate: ",String.valueOf(mahoadon));
@@ -84,7 +85,7 @@ public class OrderDetailActyvity extends AppCompatActivity {
 
                         orderDetailList.add(new OrderDetail(id, Price, name, images, quantity,mahoadon));
                         //  commentList.clear();
-//                        Log.e( "OrderDetail: ",String.valueOf(name) );
+                        Log.e( "OrderDetail: ",String.valueOf(name) );
 
                     }
                 } catch (JSONException e) {
@@ -108,7 +109,7 @@ public class OrderDetailActyvity extends AppCompatActivity {
                 HashMap<String, String> param = new HashMap<String, String>();
                 //dua vao idsanpham tren php
                 param.put("idMaHoaDon", String.valueOf(mahoadon));
-//                Log.e( "onBindViewHolder: ",String.valueOf(mahoadon));
+                Log.e( "onBindViewHolder: ",String.valueOf(mahoadon));
                 //return param de gui request
                 return param;
             }
