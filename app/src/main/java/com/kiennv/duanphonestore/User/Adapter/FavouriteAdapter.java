@@ -99,7 +99,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                         }) {
                             @Override
                             protected Map<String, String> getParams() throws AuthFailureError {
-
                                 Map<String, String> params = new HashMap<>();
                                 params.put("id", String.valueOf(favouriteList.get(pos).getId()));
                                 return params;

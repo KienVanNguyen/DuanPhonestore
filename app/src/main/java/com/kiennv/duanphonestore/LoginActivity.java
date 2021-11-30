@@ -207,6 +207,9 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putString("address", account.getAddress());
                                     editor.putString("images", account.getImages());
                                     editor.commit();
+                                    new SweetAlertDialog(v.getContext(), SweetAlertDialog.PROGRESS_TYPE)
+                                            .setTitleText("Đang đăng nhập...")
+                                            .show();
                                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("login", account);
@@ -264,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
         face.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(v.getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Đăng nhập Facebook hiện chưa phát triển")
                         .show();
             }
@@ -273,7 +276,7 @@ public class LoginActivity extends AppCompatActivity {
         twiter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(v.getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Đăng nhập Twiter hiện chưa phát triển")
                         .show();
             }
@@ -283,13 +286,11 @@ public class LoginActivity extends AppCompatActivity {
         gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SweetAlertDialog(view.getContext(), SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(view.getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Đăng nhập Google hiện chưa phát triển")
                         .show();
             }
         });
-
-
     }
 
     //hien thi mat khau

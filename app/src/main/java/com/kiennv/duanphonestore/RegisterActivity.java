@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -208,6 +209,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     message = jsonObject.getString("message");
                                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
                                     //Start LoginActivity
+                                    new SweetAlertDialog(v.getContext(), SweetAlertDialog.PROGRESS_TYPE)
+                                            .setTitleText("Đang đăng ký...")
+                                            .show();
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -223,7 +227,9 @@ public class RegisterActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(RegisterActivity.this, "Vui lòng chọn đủ để đăng ký", Toast.LENGTH_SHORT).show();
+                            new SweetAlertDialog(v.getContext(), SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("Hãy nhập đầy đủ thông tin")
+                                    .show();
                         }
                     }){
                         @Override

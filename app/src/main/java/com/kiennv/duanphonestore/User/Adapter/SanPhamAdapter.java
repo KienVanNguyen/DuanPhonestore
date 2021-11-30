@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHolder> {
     private List<SanPham> sanPhamList;
     private LayoutInflater layoutInflater;
@@ -68,16 +70,17 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
 //        holder.txtGiasp.setText(sanPhamList.get(position).getPrice() + " VND");
         Picasso.get().load(sanPhamList.get(position).getImage_SP()).into(holder.imgSanpham);
 
-
         holder.btnlikesp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean exit=false;
                 if(HomeFragment.favouriteList.size()>0){
                 for (int i = 0; i < HomeFragment.favouriteList.size(); i++) {
-                    Log.e("onClick: ", String.valueOf(HomeFragment.favouriteList.get(i).getIdSP()));
+//                    Log.e("onClick: ", String.valueOf(HomeFragment.favouriteList.get(i).getIdSP()));
                     if (sanPhamList.get(position).getId() == HomeFragment.favouriteList.get(i).getIdSP()) {
-                        Toast.makeText(v.getContext(), "Sản phẩm đã được thêm vào mục nổi bật", Toast.LENGTH_LONG).show();
+                        new SweetAlertDialog(v.getContext(), SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Sản phẩm đã được thêm vào mục nổi bật")
+                                .show();
                         exit = true;
                     }
                     }

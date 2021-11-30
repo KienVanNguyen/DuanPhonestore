@@ -159,7 +159,7 @@ public class CardFragment extends Fragment {
                 StringRequest stringRequest1 =new StringRequest(Request.Method.POST, URL_InsertOrderDetail, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(v.getContext(), response.toString(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(v.getContext(), response.toString(),Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
