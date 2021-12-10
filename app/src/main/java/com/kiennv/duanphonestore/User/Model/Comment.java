@@ -7,21 +7,25 @@ public class Comment {
     private String status;
     private int idUS;
     private int idSP;
+    private float star;
 
-    public Comment(int id, String nameUS, String imageUS, String status, int idUS, int idSP) {
+    public Comment(int id, String nameUS, String imageUS, String status, int idUS, int idSP, float star) {
         this.id = id;
         this.nameUS = nameUS;
         this.imageUS = imageUS;
         this.status = status;
         this.idUS = idUS;
         this.idSP = idSP;
+        this.star = star;
     }
-    public Comment(String nameUS, String imageUS, String status, int idUS, int idSP) {
+
+    public Comment(String nameUS, String imageUS, String status, int idUS, int idSP, float star) {
         this.nameUS = nameUS;
         this.imageUS = imageUS;
         this.status = status;
         this.idUS = idUS;
         this.idSP = idSP;
+        this.star = star;
     }
 
     public int getId() {
@@ -70,5 +74,13 @@ public class Comment {
 
     public void setIdSP(int idSP) {
         this.idSP = idSP;
+    }
+
+    public float getStar() {
+        return star;
+    }
+
+    public void setStar(float star) {
+        this.star = star;
     }
 }

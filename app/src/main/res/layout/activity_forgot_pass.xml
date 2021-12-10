@@ -114,6 +114,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edtPassForgot"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -124,7 +125,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:drawablePadding="12dp"
             android:hint="Mật khẩu"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:imeOptions="actionNext"
             android:minWidth="320dp"
             android:minHeight="50dp"

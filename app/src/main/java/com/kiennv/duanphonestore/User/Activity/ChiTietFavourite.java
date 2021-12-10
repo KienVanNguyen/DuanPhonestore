@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -201,7 +205,7 @@ public class ChiTietFavourite extends AppCompatActivity {
                 String status = "";
                 int idSP = 0;
                 int idUS=0;
-
+                float star=0;
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -213,6 +217,7 @@ public class ChiTietFavourite extends AppCompatActivity {
                         status = jsonObject.getString("status");
                         idUS = jsonObject.getInt("idUS");
                         idSP = jsonObject.getInt("idSP");
+                        star = (float) jsonObject.getDouble("star");
 //                        Log.e("onBindViewHolder1111: ",imageUS);
                         // ArrayList<ModelChat> list=new ArrayList<>(lisymodelChats);
 //                        list.add(modelChat);
@@ -222,7 +227,7 @@ public class ChiTietFavourite extends AppCompatActivity {
 //                        lv.setAdapter(chatdapter);
                         //get ve mang
 
-                        commentList.add(new Comment(id, nameUS, imageUS, status, idUS,idSP));
+                        commentList.add(new Comment(id, nameUS, imageUS, status, idUS,idSP,star));
                         //Log.e( "oncomment: ",String.valueOf(idSP) );
 //                         commentList.clear();
                         //    commentAdapter.notifyDataSetChanged();
@@ -265,48 +270,70 @@ public class ChiTietFavourite extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String cmt = txtcomment.getText().toString();
-                //lay du lieu user
                 if(TextUtils.isEmpty(cmt)){
                     txtcomment.setError("Chưa phản hồi.");
-                    return;
+
+                }else{
+                    Dialog dialog=new Dialog(ChiTietFavourite.this);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.raiting_spdialog);
+                    dialog.show();
+
+                    RatingBar ratingBar =dialog.findViewById(R.id.ratingBar);
+                    TextView tvratingBar =dialog.findViewById(R.id.tvrainting);
+                    Button btnratingBar =dialog.findViewById(R.id.btnRaintingbar);
+                    ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            tvratingBar.setText(String.format("(%s)",rating));
+                        }
+                    });
+                    btnratingBar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            float starting=ratingBar.getRating();
+
+                            SharedPreferences sp=getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
+                            String edtcomment= txtcomment.getText().toString();
+                            images=String.valueOf(sp.getString("images",""));
+                            name=String.valueOf(sp.getString("name",""));
+                            idUS=sp.getInt("id",0);
+
+                            StringRequest stringRequest1=new StringRequest(Request.Method.POST, URL_Comment, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(v.getContext(), "Cảm ơn bạn đã phản hồi.",Toast.LENGTH_LONG).show();
+                                    rcvCommment.setAdapter(commentAdapter);
+                                    txtcomment.setText("");
+                                    dialog.dismiss();
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            }){
+
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map<String,String> map=new HashMap<>();
+                                    map.put("imageUS",images);
+                                    map.put("nameUS",name);
+                                    map.put("idUS",String.valueOf(idUS));
+                                    map.put("status",edtcomment);
+                                    map.put("idSP",String.valueOf(id));
+                                    map.put("star",String.valueOf(starting));
+                                    Log.e( "onClick: ",String.valueOf(idUS));
+                                    commentList.add(new Comment( name, images, edtcomment, idUS,id,starting));
+                                    return map;
+                                }
+                            };
+                            RequestQueue requestQueue1 = Volley.newRequestQueue(v.getContext());
+                            requestQueue1.add(stringRequest1);
+                        }
+                    });
                 }
-                SharedPreferences sp=getApplicationContext().getSharedPreferences("getuser", Context.MODE_PRIVATE);
-                String edtcomment= txtcomment.getText().toString();
-                images=String.valueOf(sp.getString("images",""));
-                name=String.valueOf(sp.getString("name",""));
-                idUS=sp.getInt("id",0);
-
-                StringRequest stringRequest1=new StringRequest(Request.Method.POST, URL_Comment, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(v.getContext(), "Cảm ơn bạn đã phản hồi.",Toast.LENGTH_LONG).show();
-                        rcvCommment.setAdapter(commentAdapter);
-                        txtcomment.setText("");
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String,String> map=new HashMap<>();
-                        map.put("imageUS",images);
-                        map.put("nameUS",name);
-                        map.put("idUS",String.valueOf(idUS));
-                        map.put("status",edtcomment);
-                        map.put("idSP",String.valueOf(idSP));
-                        commentList.add(new Comment( name, images, edtcomment, idUS,idSP));
-                        return map;
-
-                    }
-                };
-                RequestQueue requestQueue1 = Volley.newRequestQueue(v.getContext());
-                requestQueue1.add(stringRequest1);
-
 
             }
 

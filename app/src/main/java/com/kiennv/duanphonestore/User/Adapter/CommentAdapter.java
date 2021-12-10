@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Comment comment=commentList.get(position);
         holder.txtName.setText( comment.getNameUS());
         holder.txtStatus.setText(comment.getStatus());
+        holder.txtstart.setText(String.valueOf(comment.getStar()));
+        holder.ratingBar.setRating((comment.getStar()));
         Picasso.get().load(comment.getImageUS()).into(holder.imageViewAVT);
 
     }
@@ -57,12 +60,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView imageViewAVT;
-        TextView txtName,txtStatus;
+        TextView txtName,txtStatus,txtstart;
+        RatingBar ratingBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtTenCM);
             imageViewAVT=itemView.findViewById(R.id.imgUSCM);
             txtStatus=itemView.findViewById(R.id.txtSTT);
+            txtstart=itemView.findViewById(R.id.txtstart);
+            ratingBar=itemView.findViewById(R.id.ratingbarADT);
         }
     }
 }
